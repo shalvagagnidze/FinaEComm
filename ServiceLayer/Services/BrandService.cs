@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DomainLayer.Entities;
 using DomainLayer.Interfaces;
+using MediatR;
+using ServiceLayer.Features.Commands.Brand;
+using ServiceLayer.Features.Queries;
 using ServiceLayer.Interfaces;
 using ServiceLayer.Models;
 using System;
@@ -13,40 +16,34 @@ namespace ServiceLayer.Services
 {
     public class BrandService : BaseService,IBrandService
     {
-        public BrandService(IUnitOfWork unitOfWork,IMapper mapper) : base(unitOfWork,mapper)
+        private readonly ISender _sender;
+        public BrandService(IUnitOfWork unitOfWork, IMapper mapper, ISender sender) : base(unitOfWork, mapper)
         {
-            
+            _sender = sender;
         }
 
         public async Task<IEnumerable<BrandModel>> GetAllAsync()
         {
-            var brands = await _unitOfWork.BrandRepository.GetAllAsync();
+            var brands = await _sender.Send(new GetAllBrandsQuery());
 
             if(brands is null)
             {
                 return Enumerable.Empty<BrandModel>();
             }
-            return _mapper.Map<IEnumerable<BrandModel>>(brands);
+            return brands;
         }
 
         public async Task<BrandModel> GetByIdAsync(Guid id)
         {
-            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id);
+            var brand = await _sender.Send(new GetBrandByIdQuery(id));
 
-            return _mapper.Map<BrandModel>(brand);
+            return brand;
         }
 
-        public async Task AddAsync(BrandModel model)
+        public async Task<Guid> AddAsync(CreateBrandCommand command)
         {
-            if(model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var brand = _mapper.Map<Brand>(model);
-
-            await _unitOfWork.BrandRepository.AddAsync(brand);
-            await _unitOfWork.SaveAsync();
+           var brandId = await _sender.Send(command);
+           return brandId;
         }
 
         public async Task UpdateAsync(BrandModel model)
