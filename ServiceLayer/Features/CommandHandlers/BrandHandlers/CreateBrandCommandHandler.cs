@@ -3,7 +3,7 @@ using DomainLayer.Entities;
 using DomainLayer.Interfaces;
 using InfrastructureLayer.Data;
 using MediatR;
-using ServiceLayer.Features.Commands.Brand;
+using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.CommandHandlers.Brand
+namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
 {
     public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Guid>
     {

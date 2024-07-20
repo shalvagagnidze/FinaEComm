@@ -1,4 +1,4 @@
-﻿using ServiceLayer.Features.Commands.Brand;
+﻿using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -14,10 +14,12 @@ namespace ServiceLayer.Interfaces
 
         Task<BrandModel> GetByIdAsync(Guid id);
 
-        Task<Guid> AddAsync(CreateBrandCommand model);
+        Task<Guid> AddAsync(CreateBrandCommand command);
 
-        Task UpdateAsync(BrandModel model);
+        Task<BrandModel> UpdateAsync(BrandModel model);
 
-        Task DeleteAsync(Guid modelId);
+        Task DeleteAsync(Guid Id);
+
+        Task Delete(BrandModel model);
     }
 }

@@ -2,7 +2,7 @@
 using DomainLayer.Entities;
 using DomainLayer.Interfaces;
 using MediatR;
-using ServiceLayer.Features.Commands.Brand;
+using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Features.Queries;
 using ServiceLayer.Interfaces;
 using ServiceLayer.Models;
@@ -26,10 +26,6 @@ namespace ServiceLayer.Services
         {
             var brands = await _sender.Send(new GetAllBrandsQuery());
 
-            if(brands is null)
-            {
-                return Enumerable.Empty<BrandModel>();
-            }
             return brands;
         }
 
@@ -43,32 +39,24 @@ namespace ServiceLayer.Services
         public async Task<Guid> AddAsync(CreateBrandCommand command)
         {
            var brandId = await _sender.Send(command);
+
            return brandId;
         }
 
-        public async Task UpdateAsync(BrandModel model)
+        public async Task<BrandModel> UpdateAsync(BrandModel model)
         {
-            if(model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            var brand = await _sender.Send(new UpdateBrandCommand(model));
 
-            var existingBrand = await _unitOfWork.BrandRepository.GetByIdAsync(model.Id);
-
-            if(existingBrand is null)
-            {
-                throw new ArgumentNullException(nameof(Brand));
-            }
-
-            _mapper.Map(model, existingBrand);
-            _unitOfWork.BrandRepository.Update(existingBrand);
-            await _unitOfWork.SaveAsync();
+            return brand;
         }
 
+        public async Task Delete(BrandModel model)
+        {
+            await _sender.Send(new DeleteBrandCommand(model));
+        }
         public async Task DeleteAsync(Guid id)
         {
-            await _unitOfWork.BrandRepository.DeleteByIdAsync(id);
-            await _unitOfWork.SaveAsync();
+            await _sender.Send(new DeleteBrandByIdCommand(id));
         }
     }
 }

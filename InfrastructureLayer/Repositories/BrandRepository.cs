@@ -40,14 +40,14 @@ namespace InfrastructureLayer.Repositories
 
         public void Delete(Brand brand)
         {
-            _dbSet.Remove(brand);
+            brand.DeleteBrand();
         }
 
         public async Task DeleteByIdAsync(Guid id)
         {
             var brand = await _dbSet.FindAsync(id);
 
-            _dbSet.Remove(brand!);
+            brand!.DeleteBrand();
         }
 
         public void Update(Brand brand)

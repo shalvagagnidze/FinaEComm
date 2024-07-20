@@ -25,6 +25,11 @@ namespace ServiceLayer.Features.QueryHandlers
         {
             var models = await _unitOfWork.BrandRepository.GetAllAsync();
 
+            if (models is null)
+            {
+                return Enumerable.Empty<BrandModel>();
+            }
+
             var brands = _mapper.Map<IEnumerable<BrandModel>>(models);
 
             return brands;  
