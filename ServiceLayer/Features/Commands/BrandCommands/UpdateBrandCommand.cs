@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.Commands.BrandCommands
 {
-    public record UpdateBrandCommand(BrandModel model) : IRequest<BrandModel>;
+    public record UpdateBrandCommand(BrandModel model) : IRequest<Unit>;
 }

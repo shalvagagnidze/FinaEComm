@@ -1,4 +1,5 @@
-﻿using ServiceLayer.Features.Commands.BrandCommands;
+﻿using MediatR;
+using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace ServiceLayer.Interfaces
 
         Task<Guid> AddAsync(CreateBrandCommand command);
 
-        Task<BrandModel> UpdateAsync(BrandModel model);
+        Task<Unit> UpdateAsync(BrandModel model);
 
         Task DeleteAsync(Guid Id);
 

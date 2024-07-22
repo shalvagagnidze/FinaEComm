@@ -2,16 +2,10 @@
 using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.BrandCommands;
-using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
 {
-    public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, BrandModel>
+    public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,7 +14,7 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<BrandModel> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
         {
             var existingBrand = await _unitOfWork.BrandRepository.GetByIdAsync(request.model.Id);
 
@@ -36,9 +30,9 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
             _unitOfWork.BrandRepository.Update(existingBrand);
             await _unitOfWork.SaveAsync();
 
-            var brand = _mapper.Map<BrandModel>(existingBrand);
 
-            return brand;
+
+            return Unit.Value;
         }
     }
 }

@@ -43,7 +43,7 @@ namespace ServiceLayer.Services
            return brandId;
         }
 
-        public async Task<BrandModel> UpdateAsync(BrandModel model)
+        public async Task<Unit> UpdateAsync(BrandModel model)
         {
             var brand = await _sender.Send(new UpdateBrandCommand(model));
 

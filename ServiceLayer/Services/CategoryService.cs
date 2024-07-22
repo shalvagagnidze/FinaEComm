@@ -21,7 +21,7 @@ namespace ServiceLayer.Services
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
-
+            
             if (categories is null)
             {
                 return Enumerable.Empty<CategoryModel>();

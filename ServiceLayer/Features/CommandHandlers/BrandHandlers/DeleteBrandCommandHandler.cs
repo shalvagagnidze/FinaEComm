@@ -30,6 +30,7 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
             }
 
             _unitOfWork.BrandRepository.Delete(brand);
+            _unitOfWork.BrandRepository.Update(brand);
             await _unitOfWork.SaveAsync();
 
             var model = _mapper.Map<BrandModel>(brand);
