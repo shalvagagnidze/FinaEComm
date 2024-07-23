@@ -39,14 +39,14 @@ namespace InfrastructureLayer.Repositories
 
         public void Delete(Category category)
         {
-            _dbSet.Remove(category);
+            category.DeleteCategory();
         }
 
         public async Task DeleteByIdAsync(Guid id)
         {
             var category = await _dbSet.FindAsync(id);
 
-            _dbSet.Remove(category!);
+            category!.DeleteCategory();
         }
 
         public void Update(Category category)

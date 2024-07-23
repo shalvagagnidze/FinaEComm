@@ -8,7 +8,7 @@ namespace DomainLayer.Common.Enums
 {
     public enum Condition
     {
-        New,
-        Used,
+        New = 0,
+        Used = 1
     }
 }

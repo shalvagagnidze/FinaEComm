@@ -33,11 +33,11 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
             };
 
             var brand = _mapper.Map<Brand>(model);
-
+            brand.CreateDate = DateTime.UtcNow;
             await _unitOfWork.BrandRepository.AddAsync(brand);
             await _unitOfWork.SaveAsync();
 
-            return model.Id;
+            return brand.Id;
         }
     }
 }

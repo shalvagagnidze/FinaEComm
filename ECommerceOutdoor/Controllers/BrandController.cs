@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Features.Commands.BrandCommands;
-using ServiceLayer.Features.Queries;
+using ServiceLayer.Features.Queries.BrandQueries;
 using ServiceLayer.Models;
 
 namespace ECommerceOutdoor.Controllers
@@ -18,7 +18,7 @@ namespace ECommerceOutdoor.Controllers
             return Ok(brands);
         }
 
-        [HttpGet("get-brand-by-id")]
+        [HttpGet("get-brand-by-{id}")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> GetBrandByIds(Guid id)
         {
@@ -54,7 +54,7 @@ namespace ECommerceOutdoor.Controllers
             return Ok("Brand deleted successfully!");
         }
 
-        [HttpPut("delete-brand-by-id")]
+        [HttpPut("delete-brand-by-{id}")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> DeleteBrandById(Guid id)
         {

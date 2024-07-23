@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Queries
+namespace ServiceLayer.Features.Queries.CategoryQueries
 {
-    public record GetAllBrandsQuery : IRequest<IEnumerable<BrandModel>>;
-
+    public record GetAllCategoriesQuery : IRequest<IEnumerable<CategoryModel>>;
+   
 }

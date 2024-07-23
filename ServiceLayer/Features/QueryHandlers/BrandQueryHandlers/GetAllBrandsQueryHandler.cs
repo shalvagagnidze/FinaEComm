@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DomainLayer.Interfaces;
 using MediatR;
-using ServiceLayer.Features.Queries;
+using ServiceLayer.Features.Queries.BrandQueries;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -9,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.QueryHandlers
+namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
 {
     public class GetAllBrandsQueryHandler : IRequestHandler<GetAllBrandsQuery, IEnumerable<BrandModel>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllBrandsQueryHandler(IUnitOfWork unitOfWork,IMapper mapper)
+        public GetAllBrandsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -32,7 +32,7 @@ namespace ServiceLayer.Features.QueryHandlers
 
             var brands = _mapper.Map<IEnumerable<BrandModel>>(models);
 
-            return brands;  
+            return brands;
         }
     }
 }

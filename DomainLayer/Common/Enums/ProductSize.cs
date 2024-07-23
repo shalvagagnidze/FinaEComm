@@ -8,10 +8,10 @@ namespace DomainLayer.Common.Enums
 {
     public enum ProductSize
     {
-        XS,
-        S,
-        M,
-        L,
-        XL
+        XS = 0,
+        S = 1,
+        M = 2,
+        L = 3,
+        XL = 4
     }
 }

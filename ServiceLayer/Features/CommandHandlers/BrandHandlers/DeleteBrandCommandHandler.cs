@@ -14,11 +14,9 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
     public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteBrandCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         public async Task Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
         {
@@ -30,10 +28,12 @@ namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
             }
 
             _unitOfWork.BrandRepository.Delete(brand);
-            _unitOfWork.BrandRepository.Update(brand);
-            await _unitOfWork.SaveAsync();
 
-            var model = _mapper.Map<BrandModel>(brand);
+            brand.DeleteTime = DateTime.UtcNow;
+
+            _unitOfWork.BrandRepository.Update(brand);
+
+            await _unitOfWork.SaveAsync();
 
         }
 

@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Queries
+namespace ServiceLayer.Features.Commands.CategoryCommands
 {
-    public record GetBrandByIdQuery(Guid id) : IRequest<BrandModel>;
-    
+    public record UpdateCategoryCommand(CategoryModel model) : IRequest<Unit>;
+
 }

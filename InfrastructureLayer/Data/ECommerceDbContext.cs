@@ -24,6 +24,10 @@ namespace InfrastructureLayer.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Brand>().HasQueryFilter(brand => !brand.IsDeleted);
+            modelBuilder.Entity<Category>().HasQueryFilter(category => !category.IsDeleted);
+            modelBuilder.Entity<Product>().HasQueryFilter(product => !product.isDeleted);
+
             modelBuilder.Entity<Brand>()
                         .HasMany(product => product.Products)
                         .WithOne(brand => brand.Brand);

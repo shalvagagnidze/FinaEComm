@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Common.Enums;
+using DomainLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace ServiceLayer.Models
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
+        public decimal Price { get; set; }
         public Sex Sex { get; set; }
         public ProductSize Size { get; set; }
         public StockStatus Status { get; set; }
         public Condition Condition { get; set; }
         public string? Description { get; set; }
+
     }
 }

@@ -1,6 +1,8 @@
 using DomainLayer.Interfaces;
 using InfrastructureLayer.Data;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer.Features.CommandHandlers.BrandHandlers;
+using ServiceLayer.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +12,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(typeof(CreateBrandCommandHandler).Assembly);
 });
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddDbContext<ECommerceDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceOutdoor"));
