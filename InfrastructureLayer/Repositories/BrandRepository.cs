@@ -26,6 +26,11 @@ namespace InfrastructureLayer.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public IQueryable<Brand> GetAllQueryable()
+        {
+            return _dbSet.AsNoTracking();
+        }
+
         public async Task<Brand> GetByIdAsync(Guid id)
         {
             var brand = await _dbSet.FindAsync(id);

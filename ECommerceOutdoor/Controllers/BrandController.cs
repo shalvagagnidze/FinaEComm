@@ -27,6 +27,20 @@ namespace ECommerceOutdoor.Controllers
             return Ok(brand);
         }
 
+        [HttpGet("get-brands-by-filtering")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetBrandsByFiltering(
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize)
+        {
+            var brands = await Mediator.Send(new BrandFilteringQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            return Ok(brands);
+        }
+
         [HttpPost("add-brand")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
