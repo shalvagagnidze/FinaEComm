@@ -10,7 +10,6 @@ namespace DomainLayer.Interfaces
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        IQueryable<TEntity> GetAllQueryable();
         Task<TEntity> GetByIdAsync(Guid id);
         Task AddAsync(TEntity entity);
         void Delete(TEntity entity);

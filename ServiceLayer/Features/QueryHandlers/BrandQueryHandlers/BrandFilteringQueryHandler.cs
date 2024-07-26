@@ -18,12 +18,10 @@ namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
     public class BrandFilteringQueryHandler : IRequestHandler<BrandFilteringQuery, PagedList<BrandModel>>
     {
         private readonly DbSet<Brand> _dbSet;
-        //private readonly IUnitOfWork _unitOfWork;
-        public BrandFilteringQueryHandler(ECommerceDbContext db /*IUnitOfWork unitOfWork*/)
+        public BrandFilteringQueryHandler(ECommerceDbContext db)
         {
             var dbSet = db.Set<Brand>();
             _dbSet = dbSet;
-            //_unitOfWork = unitOfWork;
         }
         public async Task<PagedList<BrandModel>> Handle(BrandFilteringQuery request, CancellationToken cancellationToken)
         {
@@ -32,7 +30,7 @@ namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
-                brandsQuery = brandsQuery.Where(b => b.Name!.Contains(request.SearchTerm));
+                brandsQuery = brandsQuery.Where(b => b.Name!.ToLower().Contains(request.SearchTerm.ToLower()));
             }
 
             if (request.SortOrder?.ToLower() == "desc")
@@ -49,9 +47,8 @@ namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
                 Id = b.Id,
                 Name = b.Name,
                 Origin = b.Origin,
-                Description = b.Description,
+                Description = b.Description
             });
-
 
             var brands = await PagedList<BrandModel>.CreateAsync(brandModelsQuery,request.Page,request.PageSize);
 

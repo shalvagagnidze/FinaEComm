@@ -27,6 +27,20 @@ namespace ECommerceOutdoor.Controllers
             return Ok(category);
         }
 
+        [HttpGet("get-category-by-filtering")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetCategoryByFiltering(
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize)
+        {
+            var categories = await Mediator.Send(new CategoryFilteringQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            return Ok(categories);
+        }
+
         [HttpPost("add-category")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CreateCategory(CreateCategoryCommand command)

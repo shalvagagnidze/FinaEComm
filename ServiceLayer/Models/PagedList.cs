@@ -19,7 +19,7 @@ public class PagedList<T>
 
     public List<T> Items { get; }
 
-    public int Page { get; }
+    public int Page { get; } 
 
     public int PageSize { get; }
 

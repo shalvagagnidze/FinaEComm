@@ -25,6 +25,20 @@ namespace ECommerceOutdoor.Controllers
             return Ok(product);
         }
 
+        [HttpGet("get-product-by-filtering")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetProductByFiltering(
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize)
+        {
+            var products = await Mediator.Send(new ProductFilteringQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            return Ok(products);
+        }
+
         [HttpPost("add-product")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
