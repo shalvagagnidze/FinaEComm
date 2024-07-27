@@ -1,31 +1,19 @@
-using DomainLayer.Interfaces;
-using InfrastructureLayer.Data;
-using Microsoft.EntityFrameworkCore;
-using ServiceLayer.Features.CommandHandlers.BrandHandlers;
-using ServiceLayer.Mapping;
+using InfrastructureLayer;
+using ServiceLayer;
+using ServiceLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-builder.Services.AddMediatR(config =>
-{
-    config.RegisterServicesFromAssembly(typeof(CreateBrandCommandHandler).Assembly);
-});
-
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-builder.Services.AddDbContext<ECommerceDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceOutdoor"));
-},ServiceLifetime.Transient);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 var app = builder.Build();
+
+await SeedData.SeedRoleAsync(app);
+await SeedData.SeedUserAsync(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

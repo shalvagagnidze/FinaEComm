@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Features.Queries.BrandQueries;
 using ServiceLayer.Models;
@@ -43,6 +44,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPost("add-brand")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
         {
             var brandId = await Mediator.Send(command);
@@ -52,6 +54,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("update-brand")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> UpdateBrand(BrandModel model)
         {
             await Mediator.Send(new UpdateBrandCommand(model));
@@ -61,6 +64,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-brand")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> DeleteBrand(BrandModel model)
         {
             await Mediator.Send(new DeleteBrandCommand(model));
@@ -70,6 +74,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-brand-by-{id}")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> DeleteBrandById(Guid id)
         {
             await Mediator.Send(new DeleteBrandByIdCommand(id));
