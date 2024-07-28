@@ -4,7 +4,9 @@ using ServiceLayer.Models;
 
 namespace ECommerceOutdoor.Controllers
 {
-    public class AuthController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class AuthController : ApiControllerBase
     {
         private readonly IAuthService _authService;
         public AuthController(IAuthService authService)

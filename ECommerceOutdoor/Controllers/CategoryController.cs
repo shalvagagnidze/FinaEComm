@@ -44,7 +44,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPost("add-category")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> CreateCategory(CreateCategoryCommand command)
         {
             var categoryId = await Mediator.Send(command);
@@ -54,7 +54,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("update-category")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> UpdateCategory(CategoryModel model)
         {
             await Mediator.Send(new UpdateCategoryCommand(model));
@@ -64,7 +64,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-category")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(CategoryModel model)
         {
             await Mediator.Send(new DeleteCategoryCommand(model));
@@ -74,7 +74,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-category-by-{id}")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategoryById(Guid id)
         {
             await Mediator.Send(new DeleteCategoryByIdCommand(id));

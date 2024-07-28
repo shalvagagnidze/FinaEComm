@@ -6,6 +6,8 @@ using ServiceLayer.Models;
 
 namespace ECommerceOutdoor.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class ProductController : ApiControllerBase
     {
         [HttpGet("get-all-products")]
@@ -42,7 +44,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPost("add-product")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {
             var productId = await Mediator.Send(command);
@@ -52,7 +54,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("update-product")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> UpdateProduct(ProductModel model)
         {
             await Mediator.Send(new UpdateProductCommand(model));
@@ -62,7 +64,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-product")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(ProductModel model)
         {
             await Mediator.Send(new DeleteProductCommand(model));
@@ -73,7 +75,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-product-by-{id}")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProductById(Guid id)
         {
             await Mediator.Send(new DeleteProductByIdCommand(id));

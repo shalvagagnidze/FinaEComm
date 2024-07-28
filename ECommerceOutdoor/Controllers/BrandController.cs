@@ -44,7 +44,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPost("add-brand")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
         {
             var brandId = await Mediator.Send(command);
@@ -54,7 +54,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("update-brand")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> UpdateBrand(BrandModel model)
         {
             await Mediator.Send(new UpdateBrandCommand(model));
@@ -64,7 +64,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-brand")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBrand(BrandModel model)
         {
             await Mediator.Send(new DeleteBrandCommand(model));
@@ -74,7 +74,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-brand-by-{id}")]
         [ProducesResponseType(200)]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBrandById(Guid id)
         {
             await Mediator.Send(new DeleteBrandByIdCommand(id));
