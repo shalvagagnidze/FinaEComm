@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Features.Queries.ProductQueries;
 using ServiceLayer.Models;
@@ -41,6 +42,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPost("add-product")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {
             var productId = await Mediator.Send(command);
@@ -50,6 +52,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("update-product")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> UpdateProduct(ProductModel model)
         {
             await Mediator.Send(new UpdateProductCommand(model));
@@ -59,6 +62,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-product")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> DeleteProduct(ProductModel model)
         {
             await Mediator.Send(new DeleteProductCommand(model));
@@ -69,6 +73,7 @@ namespace ECommerceOutdoor.Controllers
 
         [HttpPut("delete-product-by-{id}")]
         [ProducesResponseType(200)]
+        [Authorize("Admin")]
         public async Task<IActionResult> DeleteProductById(Guid id)
         {
             await Mediator.Send(new DeleteProductByIdCommand(id));
