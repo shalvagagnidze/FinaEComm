@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.Queries.BrandQueries
 {
-    public record BrandFilteringQuery(string? SearchTerm,string? SortColumn,string? SortOrder,int Page,int PageSize) : IRequest<PagedList<BrandModel>>;
+    public record BrandSearchingQuery(string? SearchTerm,string? SortColumn,string? SortOrder,int Page,int PageSize) : IRequest<PagedList<BrandModel>>;
 
 }

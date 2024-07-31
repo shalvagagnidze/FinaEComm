@@ -28,9 +28,10 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             {
                 Name = request.Name,
                 Price = request.Price,
-                Sex = request.Sex,
+                Gender = request.Gender,
                 Size = request.Size,
                 Status = StockStatus.InStock,
+                Specifications = request.Specifications,
                 Condition = request.Condition,
                 Description = request.Description,
             };

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.Commands.ProductCommands
 {
-    public record CreateProductCommand(string Name,decimal Price,Sex Sex,ProductSize Size,Condition Condition,string Description, Guid CategoryId, Guid BrandId) : IRequest<Guid>;
+    public record CreateProductCommand(string Name,decimal Price,Gender Gender,ICollection<ProductSize> Size,ICollection<Specification>? Specifications,Condition Condition,string Description, Guid CategoryId, Guid BrandId) : IRequest<Guid>;
 
 }

@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
 {
-    public class BrandFilteringQueryHandler : IRequestHandler<BrandFilteringQuery, PagedList<BrandModel>>
+    public class BrandSearchingQueryHandler : IRequestHandler<BrandSearchingQuery, PagedList<BrandModel>>
     {
         private readonly DbSet<Brand> _dbSet;
-        public BrandFilteringQueryHandler(ECommerceDbContext db)
+        public BrandSearchingQueryHandler(ECommerceDbContext db)
         {
             var dbSet = db.Set<Brand>();
             _dbSet = dbSet;
         }
-        public async Task<PagedList<BrandModel>> Handle(BrandFilteringQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<BrandModel>> Handle(BrandSearchingQuery request, CancellationToken cancellationToken)
         {
             IQueryable<Brand> brandsQuery = _dbSet;
 
@@ -56,7 +56,7 @@ namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
    
         }
 
-        private static Expression<Func<Brand, object>> GetSortProperty(BrandFilteringQuery request) =>
+        private static Expression<Func<Brand, object>> GetSortProperty(BrandSearchingQuery request) =>
        request.SortColumn?.ToLower() switch
        {
            "name" => brand => brand.Name!,

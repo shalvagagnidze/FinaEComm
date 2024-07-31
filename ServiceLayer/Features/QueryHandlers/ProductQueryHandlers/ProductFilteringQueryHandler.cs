@@ -2,13 +2,11 @@
 using InfrastructureLayer.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ServiceLayer.Features.Queries.CategoryQueries;
 using ServiceLayer.Features.Queries.ProductQueries;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,55 +15,76 @@ namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers
     public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuery, PagedList<ProductModel>>
     {
         private readonly DbSet<Product> _dbSet;
-
         public ProductFilteringQueryHandler(ECommerceDbContext db)
         {
             var dbSet = db.Set<Product>();
             _dbSet = dbSet;
         }
-
         public async Task<PagedList<ProductModel>> Handle(ProductFilteringQuery request, CancellationToken cancellationToken)
         {
-            IQueryable<Product> productQuery = _dbSet;
+            IQueryable<Product> products = _dbSet;
 
-            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            if (request.filter.BrandIds!.Any())
             {
-                productQuery = productQuery.Where(b => b.Name!.ToLower().Contains(request.SearchTerm.ToLower()));
+                products = products.Where(x => request.filter.BrandIds!.Contains(x.Brand!.Id));
             }
 
-            if (request.SortOrder?.ToLower() == "desc")
+            if (request.filter.CategoryIds!.Any())
             {
-                productQuery = productQuery.OrderByDescending(GetSortProperty(request));
-            }
-            else
-            {
-                productQuery = productQuery.OrderBy(GetSortProperty(request));
+                products = products.Where(x => request.filter.CategoryIds!.Contains(x.Category!.Id));
             }
 
-            var productModelsQuery = productQuery.Select(b => new ProductModel
+            if (request.filter.Gender!.Any())
+            {
+                products = products.Where(x => request.filter.Gender!.Contains(x.Gender));
+            }
+
+            if (request.filter.ProductSize!.Any())
+            {
+                products = products.Where(x => x.Size!.Any(s => request.filter.ProductSize!.Contains(s)));
+            }
+
+            if (request.filter.Condition!.Any())
+            {
+                products = products.Where(x => request.filter.Condition!.Contains(x.Condition));
+            }
+
+            if (request.filter.StockStatus!.HasValue)
+            {
+                products = products.Where(x => request.filter.StockStatus == x.Status);
+            }
+
+            if (request.filter.Specifications!.Any())
+            {
+                products = products.Where(x => x.Specifications!.Any(s => request.filter.Specifications!.Contains(s)));
+            }
+
+            if (request.filter.MinPrice.HasValue)
+            {
+                products = products.Where(x => x.Price >= request.filter.MinPrice);
+            }
+
+            if (request.filter.MaxPrice.HasValue)
+            {
+                products = products.Where(x => x.Price <= request.filter.MaxPrice);
+            }
+
+            var productModelsQuery = products.Select(b => new ProductModel
             {
                 Id = b.Id,
                 Name = b.Name,
                 Price = b.Price,
-                Sex = b.Sex,
+                Gender = b.Gender,
                 Size = b.Size,
                 Status = b.Status,
                 Condition = b.Condition,
+                Specifications = b.Specifications,
                 Description = b.Description
             });
 
-            var products = await PagedList<ProductModel>.CreateAsync(productModelsQuery, request.Page, request.PageSize);
+            var productsQuery = await PagedList<ProductModel>.CreateAsync(productModelsQuery, request.Page, request.PageSize);
 
-            return products;
+            return productsQuery;
         }
-
-        private static Expression<Func<Product, object>> GetSortProperty(ProductFilteringQuery request) =>
-      request.SortColumn?.ToLower() switch
-      {
-          "name" => product => product.Name!,
-          "price" => product => product.Price,
-          "size" => product => product.Size,
-          _ => product => product.Id
-      };
     }
 }

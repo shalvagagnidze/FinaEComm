@@ -101,17 +101,20 @@ namespace InfrastructureLayer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Sex")
-                        .HasColumnType("integer");
+                    b.Property<int[]>("Size")
+                        .HasColumnType("integer[]");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("integer");
+                    b.Property<int[]>("Specifications")
+                        .HasColumnType("integer[]");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

@@ -28,16 +28,28 @@ namespace ECommerceOutdoor.Controllers
             return Ok(product);
         }
 
-        [HttpGet("get-product-by-filtering")]
+        [HttpGet("get-product-by-searching")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetProductByFiltering(
+        public async Task<IActionResult> GetProductBySearching(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
         {
-            var products = await Mediator.Send(new ProductFilteringQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+            var products = await Mediator.Send(new ProductSearchingQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            return Ok(products);
+        }
+
+        [HttpGet("get-products-by-filtering")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetProductsByFiltering(
+            FilterModel filter,
+            int page,
+            int pageSize)
+        {
+            var products = await Mediator.Send(new ProductFilteringQuery(filter, page, pageSize));
 
             return Ok(products);
         }

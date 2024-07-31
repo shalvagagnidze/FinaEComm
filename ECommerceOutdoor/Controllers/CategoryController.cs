@@ -28,9 +28,9 @@ namespace ECommerceOutdoor.Controllers
             return Ok(category);
         }
 
-        [HttpGet("get-category-by-filtering")]
+        [HttpGet("get-category-by-searching")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetCategoryByFiltering(
+        public async Task<IActionResult> GetCategorySearching(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,

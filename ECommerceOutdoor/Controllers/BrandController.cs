@@ -28,16 +28,16 @@ namespace ECommerceOutdoor.Controllers
             return Ok(brand);
         }
 
-        [HttpGet("get-brands-by-filtering")]
+        [HttpGet("get-brands-by-searching")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetBrandsByFiltering(
+        public async Task<IActionResult> GetBrandsBySearching(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
         {
-            var brands = await Mediator.Send(new BrandFilteringQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+            var brands = await Mediator.Send(new BrandSearchingQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
 
             return Ok(brands);
         }

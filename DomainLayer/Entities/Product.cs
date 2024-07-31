@@ -14,10 +14,11 @@ namespace DomainLayer.Entities
     {
         public string? Name { get; set; }
         public decimal Price { get; set; }
-        public Sex Sex { get; set; }
-        public ProductSize Size { get; set; }
+        public Gender Gender { get; set; }
+        public ICollection<ProductSize>? Size { get; set; }
         public StockStatus Status { get; set; }
         public Condition Condition { get; set; }
+        public ICollection<Specification>? Specifications { get; set; }
         public string? Description { get; set; }
         public Category? Category { get; set; }
         public Brand? Brand { get; set; }
