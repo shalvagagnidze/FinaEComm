@@ -19,6 +19,8 @@ namespace InfrastructureLayer.Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Facet> Facets { get; set; }
+        public DbSet<FacetValue> FacetValues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +45,15 @@ namespace InfrastructureLayer.Data
             modelBuilder.Entity<Product>()
                         .HasOne(category => category.Category)
                         .WithMany(products => products.Products);
+
+            modelBuilder.Entity<Facet>()
+                        .HasMany(facet => facet.FacetValues)
+                        .WithOne(facetValue => facetValue.Facet);
+
+            modelBuilder.Entity<FacetValue>()
+                        .HasOne(facetValue => facetValue.Facet)
+                        .WithMany(facet => facet.FacetValues)
+                        .HasForeignKey(facetValue => facetValue.FacetId);
                         
         }
     }

@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DomainLayer.Entities
+{
+    public class FacetValue : BaseEntity
+    {
+        public string Value { get; set; }
+        public int FacetId { get; set; }
+
+        public Facet Facet { get; set; }
+    }
+}
