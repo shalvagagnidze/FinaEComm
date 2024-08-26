@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DomainLayer.Entities;
+using DomainLayer.Entities.Facets;
 using DomainLayer.Entities.Products;
+using ServiceLayer.Features.Commands.FacetCommands;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace ServiceLayer.Mapping
             CreateMap<CategoryModel, Category>();
             CreateMap<Product, ProductModel>();
             CreateMap<ProductModel, Product>();
+            CreateMap<FacetValueModel, FacetValue>();
+            CreateMap<FacetModel, Facet>();
         }
     }
 }

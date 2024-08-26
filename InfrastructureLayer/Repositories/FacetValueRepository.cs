@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace InfrastructureLayer.Repositories
 {
-    public class FacetRepository : IFacetRepository
+    public class FacetValueRepository : IFacetValueRepository
     {
-        private readonly DbSet<Facet> _dbSet;
+        private readonly DbSet<FacetValue> _dbSet;
 
-        public FacetRepository(ECommerceDbContext db)
+        public FacetValueRepository(ECommerceDbContext db)
         {
-            var dbSet = db.Set<Facet>();
+            var dbSet = db.Set<FacetValue>();
             _dbSet = dbSet;
         }
 
-        public async Task AddAsync(Facet entity)
+        public async Task AddAsync(FacetValue entity)
         {
             await _dbSet.AddAsync(entity);
         }
 
-        public void Delete(Facet entity)
+        public void Delete(FacetValue entity)
         {
             _dbSet.Remove(entity);
         }
@@ -39,17 +39,17 @@ namespace InfrastructureLayer.Repositories
             }
         }
 
-        public async Task<IEnumerable<Facet>> GetAllAsync()
+        public async Task<IEnumerable<FacetValue>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<Facet> GetByIdAsync(Guid id)
+        public async Task<FacetValue> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Include(fa => fa.FacetValues).FirstOrDefaultAsync(fa => fa.Id == id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public void Update(Facet entity)
+        public void Update(FacetValue entity)
         {
             _dbSet.Update(entity);
         }

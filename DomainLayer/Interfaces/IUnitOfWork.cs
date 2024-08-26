@@ -11,6 +11,8 @@ namespace DomainLayer.Interfaces
         IBrandRepository BrandRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
+        IFacetRepository FacetRepository { get; }
+        IFacetValueRepository FacetValueRepository { get; }
         Task SaveAsync();
     }
 }
