@@ -1,5 +1,4 @@
-﻿using DomainLayer.Entities;
-using DomainLayer.Entities.Products;
+﻿using DomainLayer.Entities.Facets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Interfaces
 {
-    public interface IProductRepository : IRepository<Product>
+    public interface IFacetRepository : IRepository<Facet>
     {
     }
 }

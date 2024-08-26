@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DomainLayer.Common.Enums;
 using DomainLayer.Entities;
+using DomainLayer.Entities.Products;
 using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.ProductCommands;

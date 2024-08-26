@@ -1,4 +1,6 @@
 ﻿using DomainLayer.Entities;
+using DomainLayer.Entities.Facets;
+using DomainLayer.Entities.Products;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +23,7 @@ namespace InfrastructureLayer.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Facet> Facets { get; set; }
         public DbSet<FacetValue> FacetValues { get; set; }
+        public DbSet<ProductFacetValue> ProductFacetValues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +32,7 @@ namespace InfrastructureLayer.Data
             modelBuilder.Entity<Brand>().HasQueryFilter(brand => !brand.IsDeleted);
             modelBuilder.Entity<Category>().HasQueryFilter(category => !category.IsDeleted);
             modelBuilder.Entity<Product>().HasQueryFilter(product => !product.isDeleted);
+            modelBuilder.Entity<ProductFacetValue>().HasQueryFilter(pfv => !pfv.Product.isDeleted);
 
             modelBuilder.Entity<Brand>()
                         .HasMany(product => product.Products)
@@ -37,6 +41,10 @@ namespace InfrastructureLayer.Data
             modelBuilder.Entity<Category>()
                         .HasMany(products => products.Products)
                         .WithOne(category => category.Category);
+
+            modelBuilder.Entity<Category>()
+                        .HasMany(cat => cat.Facets)
+                        .WithMany(fac => fac.Categories);
 
             modelBuilder.Entity<Product>()
                         .HasOne(brand => brand.Brand)
@@ -54,7 +62,15 @@ namespace InfrastructureLayer.Data
                         .HasOne(facetValue => facetValue.Facet)
                         .WithMany(facet => facet.FacetValues)
                         .HasForeignKey(facetValue => facetValue.FacetId);
-                        
+
+            modelBuilder.Entity<ProductFacetValue>()
+                        .HasOne(pfc => pfc.Product)
+                        .WithMany(pfc => pfc.ProductFacetValues);
+
+            modelBuilder.Entity<ProductFacetValue>()
+                        .HasOne(pfc => pfc.FacetValue);
+                
+
         }
     }
 }

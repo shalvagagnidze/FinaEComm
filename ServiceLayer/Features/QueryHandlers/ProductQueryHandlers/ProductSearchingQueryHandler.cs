@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Entities;
+using DomainLayer.Entities.Products;
 using InfrastructureLayer.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

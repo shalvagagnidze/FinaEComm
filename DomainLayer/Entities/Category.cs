@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DomainLayer.Entities.Facets;
 
 namespace DomainLayer.Entities
 {
@@ -14,6 +15,7 @@ namespace DomainLayer.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime DeleteTime { get; set; }
         public bool IsDeleted { get; set; }
+        public ICollection<Facet> Facets { get; set; }
         public void DeleteCategory()
         {
             IsDeleted = true;

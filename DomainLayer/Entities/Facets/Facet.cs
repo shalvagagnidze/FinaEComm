@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainLayer.Entities
+namespace DomainLayer.Entities.Facets
 {
     public class Facet : BaseEntity
     {
@@ -14,5 +14,6 @@ namespace DomainLayer.Entities
         public bool IsCustom { get; set; }
 
         public ICollection<FacetValue>? FacetValues { get; set; }
+        public ICollection<Category>? Categories { get; set; }
     }
 }

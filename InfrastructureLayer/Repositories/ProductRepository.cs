@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Entities;
+using DomainLayer.Entities.Products;
 using DomainLayer.Interfaces;
 using InfrastructureLayer.Data;
 using Microsoft.EntityFrameworkCore;

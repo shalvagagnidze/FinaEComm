@@ -5,10 +5,11 @@ using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainLayer.Entities
+namespace DomainLayer.Entities.Products
 {
     public class Product : BaseEntity
     {
@@ -19,6 +20,7 @@ namespace DomainLayer.Entities
         public StockStatus Status { get; set; }
         public Condition Condition { get; set; }
         public ICollection<Specification>? Specifications { get; set; }
+        public ICollection<ProductFacetValue>? ProductFacetValues { get; set; }
         public string? Description { get; set; }
         public Category? Category { get; set; }
         public Brand? Brand { get; set; }

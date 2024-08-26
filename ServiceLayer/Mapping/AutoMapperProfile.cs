@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DomainLayer.Entities;
+using DomainLayer.Entities.Products;
 using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
