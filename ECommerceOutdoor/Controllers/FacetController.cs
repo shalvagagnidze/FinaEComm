@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Features.Commands.FacetCommands;
+using ServiceLayer.Features.Queries.FacetQueries;
+using ServiceLayer.Features.Queries.ProductQueries;
 using ServiceLayer.Models;
 
 
@@ -10,6 +12,15 @@ namespace ECommerceOutdoor.Controllers
     [Route("[controller]")]
     public class FacetController : ApiControllerBase
     {
+        [HttpGet("get-all-facets")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetAllFacets()
+        {
+            var facets = await Mediator.Send(new GetAllFacetsWithValuesQuery());
+
+            return Ok(facets);
+        }
+
         [HttpPost("add-facet")]
         [ProducesResponseType(200)]
         [Authorize(Roles = "Admin,Moderator")]

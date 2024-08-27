@@ -41,7 +41,7 @@ namespace InfrastructureLayer.Repositories
 
         public async Task<IEnumerable<Facet>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Include(fa => fa.FacetValues).ToListAsync();
         }
 
         public async Task<Facet> GetByIdAsync(Guid id)

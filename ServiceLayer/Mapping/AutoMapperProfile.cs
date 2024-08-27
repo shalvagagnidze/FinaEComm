@@ -23,7 +23,9 @@ namespace ServiceLayer.Mapping
             CreateMap<Product, ProductModel>();
             CreateMap<ProductModel, Product>();
             CreateMap<FacetValueModel, FacetValue>();
+            CreateMap<FacetValue, FacetValueModel>();
             CreateMap<FacetModel, Facet>();
+            CreateMap<Facet, FacetModel>();
         }
     }
 }
