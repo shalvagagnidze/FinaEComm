@@ -3,36 +3,30 @@ using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Queries.BrandQueries;
 using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers
+namespace ServiceLayer.Features.QueryHandlers.BrandQueryHandlers;
+
+public class GetAllBrandsQueryHandler : IRequestHandler<GetAllBrandsQuery, IEnumerable<BrandModel>>
 {
-    public class GetAllBrandsQueryHandler : IRequestHandler<GetAllBrandsQuery, IEnumerable<BrandModel>>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public GetAllBrandsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+    public async Task<IEnumerable<BrandModel>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
+    {
+        var models = await _unitOfWork.BrandRepository.GetAllAsync();
 
-        public GetAllBrandsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        if (models is null)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            return Enumerable.Empty<BrandModel>();
         }
-        public async Task<IEnumerable<BrandModel>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
-        {
-            var models = await _unitOfWork.BrandRepository.GetAllAsync();
 
-            if (models is null)
-            {
-                return Enumerable.Empty<BrandModel>();
-            }
+        var brands = _mapper.Map<IEnumerable<BrandModel>>(models);
 
-            var brands = _mapper.Map<IEnumerable<BrandModel>>(models);
-
-            return brands;
-        }
+        return brands;
     }
 }

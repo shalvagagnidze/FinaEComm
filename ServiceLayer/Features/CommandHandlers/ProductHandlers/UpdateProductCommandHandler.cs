@@ -1,43 +1,51 @@
-﻿using AutoMapper;
-using DomainLayer.Interfaces;
+﻿using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.ProductCommands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServiceLayer.Interfaces;
 
-namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
+namespace ServiceLayer.Features.CommandHandlers.ProductHandlers;
+
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Unit>
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Unit>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IFileService _fileService;
+    public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UpdateProductCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
-        {
-            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(request.model.Id);
+        _unitOfWork = unitOfWork;
+        _fileService = fileService;
+    }
+    public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    {
+        var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(request.model.Id);
 
-            if (existingProduct is null)
+        if (existingProduct is null)
+        {
+            throw new ArgumentNullException(nameof(existingProduct), "Product not found");
+        }
+
+        var oldImages = existingProduct.Images;
+
+        existingProduct.Name = request.model.Name;
+        existingProduct.Price = request.model.Price;
+        existingProduct.Gender = request.model.Gender;
+        existingProduct.Size = request.model.Size;
+        existingProduct.Status = request.model.Status;
+        existingProduct.Description = request.model.Description;
+        existingProduct.Images = request.model.Images;
+
+        if (request.model.Images != null)
+        {
+            foreach(var image in oldImages!)
             {
-                throw new ArgumentNullException(nameof(existingProduct), "Product not found");
-            }
-
-            existingProduct.Name = request.model.Name;
-            existingProduct.Price = request.model.Price;
-            existingProduct.Gender = request.model.Gender;
-            existingProduct.Size = request.model.Size;
-            existingProduct.Status = request.model.Status;
-            existingProduct.Description = request.model.Description;
-
-            _unitOfWork.ProductRepository.Update(existingProduct);
-
-            await _unitOfWork.SaveAsync();
-
-            return Unit.Value;
+                _fileService.DeleteFile(image);
+            }              
         }
+            
+
+        _unitOfWork.ProductRepository.Update(existingProduct);
+
+        await _unitOfWork.SaveAsync();
+
+        return Unit.Value;
     }
 }

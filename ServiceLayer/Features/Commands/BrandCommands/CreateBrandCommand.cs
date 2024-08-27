@@ -1,12 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Commands.BrandCommands
-{
-    public record CreateBrandCommand(string Name, string Origin, string Description) : IRequest<Guid>;
+namespace ServiceLayer.Features.Commands.BrandCommands;
 
-}
+public record CreateBrandCommand(string Name, string Origin, string Description) : IRequest<Guid>;

@@ -4,82 +4,81 @@ using ServiceLayer.Features.Commands.BrandCommands;
 using ServiceLayer.Features.Queries.BrandQueries;
 using ServiceLayer.Models;
 
-namespace ECommerceOutdoor.Controllers
+namespace ECommerceOutdoor.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BrandController : ApiControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BrandController : ApiControllerBase
+    [HttpGet("get-all-brands")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetAllBrands()
     {
-        [HttpGet("get-all-brands")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> GetAllBrands()
-        {
-            var brands = await Mediator.Send(new GetAllBrandsQuery());
+        var brands = await Mediator.Send(new GetAllBrandsQuery());
 
-            return Ok(brands);
-        }
+        return Ok(brands);
+    }
 
-        [HttpGet("get-brand-by-{id}")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> GetBrandByIds(Guid id)
-        {
-            var brand = await Mediator.Send(new GetBrandByIdQuery(id));
+    [HttpGet("get-brand-by-{id}")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetBrandByIds(Guid id)
+    {
+        var brand = await Mediator.Send(new GetBrandByIdQuery(id));
 
-            return Ok(brand);
-        }
+        return Ok(brand);
+    }
 
-        [HttpGet("get-brands-by-searching")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> GetBrandsBySearching(
-            string? searchTerm,
-            string? sortColumn,
-            string? sortOrder,
-            int page,
-            int pageSize)
-        {
-            var brands = await Mediator.Send(new BrandSearchingQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
+    [HttpGet("get-brands-by-searching")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetBrandsBySearching(
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int page,
+        int pageSize)
+    {
+        var brands = await Mediator.Send(new BrandSearchingQuery(searchTerm, sortColumn, sortOrder, page, pageSize));
 
-            return Ok(brands);
-        }
+        return Ok(brands);
+    }
 
-        [HttpPost("add-brand")]
-        [ProducesResponseType(200)]
-        [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
-        {
-            var brandId = await Mediator.Send(command);
+    [HttpPost("add-brand")]
+    [ProducesResponseType(200)]
+    [Authorize(Roles = "Admin,Moderator")]
+    public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
+    {
+        var brandId = await Mediator.Send(command);
 
-            return Ok(brandId);
-        }
+        return Ok(brandId);
+    }
 
-        [HttpPut("update-brand")]
-        [ProducesResponseType(200)]
-        [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> UpdateBrand(BrandModel model)
-        {
-            await Mediator.Send(new UpdateBrandCommand(model));
+    [HttpPut("update-brand")]
+    [ProducesResponseType(200)]
+    [Authorize(Roles = "Admin,Moderator")]
+    public async Task<IActionResult> UpdateBrand(BrandModel model)
+    {
+        await Mediator.Send(new UpdateBrandCommand(model));
 
-            return Ok("Brand updated successfully!");
-        }
+        return Ok("Brand updated successfully!");
+    }
 
-        [HttpPut("delete-brand")]
-        [ProducesResponseType(200)]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteBrand(BrandModel model)
-        {
-            await Mediator.Send(new DeleteBrandCommand(model));
+    [HttpPut("delete-brand")]
+    [ProducesResponseType(200)]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteBrand(BrandModel model)
+    {
+        await Mediator.Send(new DeleteBrandCommand(model));
 
-            return Ok("Brand deleted successfully!");
-        }
+        return Ok("Brand deleted successfully!");
+    }
 
-        [HttpPut("delete-brand-by-{id}")]
-        [ProducesResponseType(200)]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteBrandById(Guid id)
-        {
-            await Mediator.Send(new DeleteBrandByIdCommand(id));
+    [HttpPut("delete-brand-by-{id}")]
+    [ProducesResponseType(200)]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteBrandById(Guid id)
+    {
+        await Mediator.Send(new DeleteBrandByIdCommand(id));
 
-            return Ok($"Brand with Id:{id} deleted successfully!");
-        }
+        return Ok($"Brand with Id:{id} deleted successfully!");
     }
 }

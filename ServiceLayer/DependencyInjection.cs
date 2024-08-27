@@ -10,66 +10,80 @@ using ServiceLayer.Interfaces;
 using ServiceLayer.Mapping;
 using ServiceLayer.Services;
 using Swashbuckle.AspNetCore.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer
+namespace ServiceLayer;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services,IConfiguration configuration)
+        services.AddMediatR(config =>
         {
-            services.AddMediatR(config =>
+            config.RegisterServicesFromAssembly(typeof(CreateBrandCommandHandler).Assembly);
+        });
+
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+        services.AddTransient<IAuthService, AuthService>();
+
+        services.AddTransient<IFileService, FileService>();
+
+        services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            options.SignIn.RequireConfirmedAccount = false)
+            .AddEntityFrameworkStores<ECommerceDbContext>()
+            .AddDefaultTokenProviders();
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters()
             {
-                config.RegisterServicesFromAssembly(typeof(CreateBrandCommandHandler).Assembly);
+                ValidateActor = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                RequireExpirationTime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration.GetSection("Jwt:Issuer").Value,
+                ValidAudience = configuration.GetSection("Jwt:Audience").Value,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.
+                GetBytes(configuration.GetSection("Jwt:Key").Value!))
+            };
+        });
+
+        services.AddEndpointsApiExplorer();
+
+        services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
             });
 
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-
-            services.AddTransient<IAuthService, AuthService>();
-
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
-                options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ECommerceDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddAuthentication(options =>
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateActor = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    RequireExpirationTime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration.GetSection("Jwt:Issuer").Value,
-                    ValidAudience = configuration.GetSection("Jwt:Audience").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.
-                    GetBytes(configuration.GetSection("Jwt:Key").Value!))
-                };
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[]{ }
+                }
             });
 
-            services.AddEndpointsApiExplorer();
-
-            services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                options.OperationFilter<SecurityRequirementsOperationFilter>();
-            });
-            return services;
-        }
+            options.OperationFilter<SecurityRequirementsOperationFilter>();
+        });
+        return services;
     }
 }
