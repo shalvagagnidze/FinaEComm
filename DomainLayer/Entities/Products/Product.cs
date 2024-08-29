@@ -15,11 +15,9 @@ namespace DomainLayer.Entities.Products
     {
         public string? Name { get; set; }
         public decimal Price { get; set; }
-        public Gender Gender { get; set; }
-        public ICollection<ProductSize>? Size { get; set; }
         public StockStatus Status { get; set; }
+        public int StockAmount { get; set; }
         public Condition Condition { get; set; }
-        public ICollection<Specification>? Specifications { get; set; }
         public ICollection<ProductFacetValue>? ProductFacetValues { get; set; }
         public string? Description { get; set; }
         public Category? Category { get; set; }

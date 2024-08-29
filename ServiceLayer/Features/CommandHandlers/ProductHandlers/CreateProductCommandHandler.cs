@@ -29,10 +29,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             {
                 Name = request.Name,
                 Price = request.Price,
-                Gender = request.Gender,
-                Size = request.Size,
                 Status = StockStatus.InStock,
-                Specifications = request.Specifications,
                 Condition = request.Condition,
                 Description = request.Description,
             };
@@ -44,6 +41,8 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             product.Brand = brand;
             product.Category = category;
             product.CreatedDate = DateTime.UtcNow;
+
+
 
             await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.SaveAsync();
