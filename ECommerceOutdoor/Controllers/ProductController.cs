@@ -28,6 +28,15 @@ public class ProductController(IFileService fileService) : ApiControllerBase
         return Ok(product);
     }
 
+    [HttpGet("get-products-by-category")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetProductByCategoryId(Guid id)
+    {
+        var products = await Mediator.Send(new GetAllProductsByCategoryQuery(id));
+
+        return Ok(products);
+    }
+
     [HttpGet("get-product-by-searching")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetProductBySearching(
@@ -64,7 +73,6 @@ public class ProductController(IFileService fileService) : ApiControllerBase
         {
             string[] allowedFileExtensions = new[] { ".jpg", ".jpeg", ".png" };
 
-            // Save each image and add the file name to the list
             var createdImageNames = await fileService.SaveFileAsync(imageFiles, allowedFileExtensions);
 
             return Ok(createdImageNames);
