@@ -19,9 +19,6 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     }
     public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        //var productSize = new List<ProductSize>(){ ProductSize.S};
-
-        //var specification = new List<Specification>() { Specification.Waterproof};
         var model = new ProductModel
         {
             Name = request.Name,

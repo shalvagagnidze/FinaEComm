@@ -16,7 +16,6 @@ public class ProductController(IFileService fileService) : ApiControllerBase
     public async Task<IActionResult> GetAllProducts()
     {
         var products = await Mediator.Send(new GetAllProductsQuery());
-
         return Ok(products);
     }
 
