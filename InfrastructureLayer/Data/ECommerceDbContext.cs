@@ -54,6 +54,10 @@ namespace InfrastructureLayer.Data
                         .HasOne(category => category.Category)
                         .WithMany(products => products.Products);
 
+            modelBuilder.Entity<Product>()
+                        .HasMany(category => category.ProductFacetValues)
+                        .WithOne(products => products.Product);
+
             modelBuilder.Entity<Facet>()
                         .HasMany(facet => facet.FacetValues)
                         .WithOne(facetValue => facetValue.Facet);

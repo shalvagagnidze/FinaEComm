@@ -47,18 +47,18 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                 product.ProductFacetValues = [];
             }
 
-            foreach(var facet in request.ProductFacetValues)
+            await _unitOfWork.ProductRepository.AddAsync(product);
+            foreach (var facet in request.ProductFacetValues)
             {
                 var productFacet = new DomainLayer.Entities.Products.ProductFacetValue
                 {
                     FacetValueId = facet.FacetValueId,
-                    ProductId = facet.ProductId
+                    ProductId = product.Id
                 };
 
                 product.ProductFacetValues.Add(productFacet);
             }
 
-            await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.SaveAsync();
 
             return product.Id;
