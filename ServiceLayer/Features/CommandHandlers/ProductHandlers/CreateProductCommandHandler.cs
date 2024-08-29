@@ -4,6 +4,7 @@ using DomainLayer.Entities;
 using DomainLayer.Entities.Products;
 using DomainLayer.Interfaces;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Models;
 using System;
@@ -41,8 +42,21 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             product.Brand = brand;
             product.Category = category;
             product.CreatedDate = DateTime.UtcNow;
+            if (product.ProductFacetValues.IsNullOrEmpty())
+            {
+                product.ProductFacetValues = [];
+            }
 
+            foreach(var facet in request.ProductFacetValues)
+            {
+                var productFacet = new DomainLayer.Entities.Products.ProductFacetValue
+                {
+                    FacetValueId = facet.FacetValueId,
+                    ProductId = facet.ProductId
+                };
 
+                product.ProductFacetValues.Add(productFacet);
+            }
 
             await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.SaveAsync();

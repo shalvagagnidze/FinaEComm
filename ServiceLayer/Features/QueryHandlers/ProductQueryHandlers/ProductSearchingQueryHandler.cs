@@ -48,11 +48,8 @@ namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers
                 Id = b.Id,
                 Name = b.Name,
                 Price = b.Price,
-                Gender = b.Gender,
-                Size = b.Size,
                 Status = b.Status,
                 Condition = b.Condition,
-                Specifications = b.Specifications,
                 Description = b.Description
             });
 
@@ -66,7 +63,6 @@ namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers
       {
           "name" => product => product.Name!,
           "price" => product => product.Price,
-          "size" => product => product.Size!,
           _ => product => product.Id
       };
     }

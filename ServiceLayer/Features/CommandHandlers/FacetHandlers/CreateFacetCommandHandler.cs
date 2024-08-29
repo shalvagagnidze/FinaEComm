@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DomainLayer.Common.Enums;
+using DomainLayer.Entities;
 using DomainLayer.Entities.Facets;
 using DomainLayer.Entities.Products;
 using DomainLayer.Interfaces;
@@ -32,7 +33,7 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
                 DisplayType = request.DisplayType,
                 IsCustom = request.IsCustom,
                 FacetValues = new List<FacetValueModel>()
-            };
+            };            
 
             if (request.FacetValues != null)
             {
@@ -43,6 +44,12 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             }
 
             var facet = _mapper.Map<Facet>(model);
+
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.CategoryId);
+            if(facet.Categories == null) {    
+                facet.Categories = new List<Category>();
+            }
+            facet.Categories.Add(category);
 
             await _unitOfWork.FacetRepository.AddAsync(facet);
             await _unitOfWork.SaveAsync();

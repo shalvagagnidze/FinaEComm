@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Entities.Facets;
+using DomainLayer.Entities.Products;
 using DomainLayer.Interfaces;
 using InfrastructureLayer.Data;
 using Microsoft.EntityFrameworkCore;
@@ -10,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace InfrastructureLayer.Repositories
 {
-    public class FacetRepository : IFacetRepository
+    public class ProductFacetValueRepository : IProductFacetValueRepository
     {
-        private readonly DbSet<Facet> _dbSet;
+        private readonly DbSet<ProductFacetValue> _dbSet;
 
-        public FacetRepository(ECommerceDbContext db)
+        public ProductFacetValueRepository(ECommerceDbContext db)
         {
-            var dbSet = db.Set<Facet>();
+            var dbSet = db.Set<ProductFacetValue>();
             _dbSet = dbSet;
         }
 
-        public async Task AddAsync(Facet entity)
+        public async Task AddAsync(ProductFacetValue entity)
         {
             await _dbSet.AddAsync(entity);
         }
 
-        public void Delete(Facet entity)
+        public void Delete(ProductFacetValue entity)
         {
             _dbSet.Remove(entity);
         }
@@ -39,17 +40,17 @@ namespace InfrastructureLayer.Repositories
             }
         }
 
-        public async Task<IEnumerable<Facet>> GetAllAsync()
+        public async Task<IEnumerable<ProductFacetValue>> GetAllAsync()
         {
-            return await _dbSet.Include(fa => fa.FacetValues).Include(fa => fa.Categories).ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
-        public async Task<Facet> GetByIdAsync(Guid id)
+        public async Task<ProductFacetValue> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Include(fa => fa.FacetValues).FirstOrDefaultAsync(fa => fa.Id == id);
+            return await _dbSet.FirstOrDefaultAsync(fa => fa.Id == id);
         }
 
-        public void Update(Facet entity)
+        public void Update(ProductFacetValue entity)
         {
             _dbSet.Update(entity);
         }

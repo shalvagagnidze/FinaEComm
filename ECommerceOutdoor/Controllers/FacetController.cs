@@ -14,9 +14,9 @@ namespace ECommerceOutdoor.Controllers
     {
         [HttpGet("get-all-facets")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetAllFacets()
+        public async Task<IActionResult> GetAllFacets(Guid categoryId)
         {
-            var facets = await Mediator.Send(new GetAllFacetsWithValuesQuery());
+            var facets = await Mediator.Send(new GetAllFacetsWithValuesQuery(categoryId));
 
             return Ok(facets);
         }

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.Queries.FacetQueries
 {
-    public record GetAllFacetsWithValuesQuery : IRequest<IEnumerable<FacetModel>>;
+    public record GetAllFacetsWithValuesQuery(Guid categoryId) : IRequest<IEnumerable<FacetModel>>;
 
 }

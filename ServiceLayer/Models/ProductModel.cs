@@ -17,7 +17,6 @@ namespace ServiceLayer.Models
         public ICollection<ProductSize>? Size { get; set; }
         public StockStatus Status { get; set; }
         public Condition Condition { get; set; }
-        public ICollection<Specification>? Specifications { get; set; }
         public string? Description { get; set; }
 
     }

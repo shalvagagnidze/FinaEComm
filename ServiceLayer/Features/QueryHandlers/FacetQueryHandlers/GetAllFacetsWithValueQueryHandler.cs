@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DomainLayer.Interfaces;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using ServiceLayer.Features.Queries.FacetQueries;
 using ServiceLayer.Features.Queries.ProductQueries;
 using ServiceLayer.Models;
@@ -30,8 +31,10 @@ namespace ServiceLayer.Features.QueryHandlers.FacetQueryHandlers
                 return Enumerable.Empty<FacetModel>();
             }
 
-            var facets = _mapper.Map<IEnumerable<FacetModel>>(models);
+            models = models.Where(f => !f.Categories.IsNullOrEmpty())
+                .Where(f => f.Categories.Any(c => c.Id == request.categoryId));
 
+            var facets = _mapper.Map<IEnumerable<FacetModel>>(models);
 
             return facets;
         }

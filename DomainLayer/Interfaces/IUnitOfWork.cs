@@ -13,6 +13,7 @@ namespace DomainLayer.Interfaces
         IProductRepository ProductRepository { get; }
         IFacetRepository FacetRepository { get; }
         IFacetValueRepository FacetValueRepository { get; }
+        IProductFacetValueRepository ProductFacetValueRepository { get; }
         Task SaveAsync();
     }
 }

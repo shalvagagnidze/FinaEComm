@@ -16,6 +16,7 @@ namespace ServiceLayer.Features.Commands.FacetCommands
         public string Name { get; set; }
         public FacetTypeEnum DisplayType { get; set; }
         public bool IsCustom { get; set; }
+        public Guid CategoryId { get; set; }
 
         public List<FacetValueModel> FacetValues { get; set; }
     }

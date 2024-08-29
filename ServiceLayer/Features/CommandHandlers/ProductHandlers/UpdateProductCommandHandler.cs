@@ -28,8 +28,6 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
 
             existingProduct.Name = request.model.Name;
             existingProduct.Price = request.model.Price;
-            existingProduct.Gender = request.model.Gender;
-            existingProduct.Size = request.model.Size;
             existingProduct.Status = request.model.Status;
             existingProduct.Description = request.model.Description;
 
