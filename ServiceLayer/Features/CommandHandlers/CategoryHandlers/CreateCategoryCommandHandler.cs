@@ -22,6 +22,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         {
             Name = request.Name,
             Description = request.Description,
+            ParentId = request.ParentId,
         };
 
         var category = _mapper.Map<Category>(model);

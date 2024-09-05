@@ -22,6 +22,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 
         existingCategory.Name = request.model.Name;
         existingCategory.Description = request.model.Description;
+        existingCategory.ParentId = request.model.ParentId;
 
         _unitOfWork.CategoryRepository.Update(existingCategory);
         await _unitOfWork.SaveAsync();

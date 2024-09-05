@@ -42,6 +42,15 @@ public class CategoryController : ApiControllerBase
         return Ok(categories);
     }
 
+    [HttpGet("get-category-with-subcategories")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetCategoryWithSubCategories(Guid id)
+    {
+        var categories = await Mediator.Send(new GetSubCategoriesQuery(id));
+
+        return Ok(categories);
+    }
+
     [HttpPost("add-category")]
     [ProducesResponseType(200)]
     [Authorize(Roles = "Admin,Moderator")]
