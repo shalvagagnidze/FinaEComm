@@ -44,11 +44,11 @@ public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, I
         var products = _mapper.Map<IEnumerable<ProductModel>>(models);
 
 
-        foreach(var product in products)
-        {
-            var imgUrl = product.Images!.Select(img => _urlHelper.Content($"~/Resources/{img}")).ToList();
-            product.Images = imgUrl;
-        }
+        //foreach(var product in products)
+        //{
+        //    var imgUrl = product.Images!.Select(img => _urlHelper.Content($"~/Resources/{img}")).ToList();
+        //    product.Images = imgUrl;
+        //}
 
         return products;
     }

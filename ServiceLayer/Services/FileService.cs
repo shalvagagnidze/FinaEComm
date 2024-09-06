@@ -42,10 +42,13 @@ public class FileService(IWebHostEnvironment environment) : IFileService
             using var stream = new FileStream(fileNameWithPath, FileMode.Create);
             await imageFile.CopyToAsync(stream);
 
-            fileNames.Add(fileName);
+            //fileNames.Add(fileName);
+
+            fileNames.Add(fileNameWithPath);
         }
         
         return fileNames;
+        
     }
 
 

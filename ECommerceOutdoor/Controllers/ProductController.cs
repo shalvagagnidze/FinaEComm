@@ -63,6 +63,16 @@ public class ProductController(IFileService fileService) : ApiControllerBase
         return Ok(products);
     }
 
+    [HttpGet("get-all-images-by-product-{id}")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> GetImage(Guid id)
+    {
+
+        var images = await Mediator.Send(new GetAllImagesByProductIdQuery(id));
+
+        return Ok(images);
+    }
+
     [HttpPost("upload-images")]
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]

@@ -51,6 +51,8 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Resources"
 });
 
+app.UseStaticFiles();
+
 app.UseCors();
 
 app.UseAuthorization();
