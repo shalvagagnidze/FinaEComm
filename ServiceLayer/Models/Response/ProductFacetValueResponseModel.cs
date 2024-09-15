@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Models
 {
-    public class ProductFacetValueModel
+    public class ProductFacetValueResponseModel
     {
-        public Guid Id { get; set; } 
-        public Guid FacetValueId { get; set; }
+        public string FacetName { get; set; }
+        public string FacetValue { get; set; }
     }
 }

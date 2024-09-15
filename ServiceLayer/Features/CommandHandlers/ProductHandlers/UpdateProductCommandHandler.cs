@@ -31,6 +31,17 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             existingProduct.Status = request.model.Status;
             existingProduct.Description = request.model.Description;
 
+            if (request.model.ProductFacetValues != null)
+            {
+                var productFacetValues = request.model.ProductFacetValues.Select(facetValue => new ProductFacetValue
+                {
+                    FacetValueId = facetValue.FacetValueId,
+                    ProductId = request.model.Id
+                });
+
+                existingProduct.ProductFacetValues = productFacetValues.ToList();
+            }
+
             _unitOfWork.ProductRepository.Update(existingProduct);
 
             await _unitOfWork.SaveAsync();

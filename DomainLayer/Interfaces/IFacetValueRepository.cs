@@ -9,5 +9,6 @@ namespace DomainLayer.Interfaces
 {
     public interface IFacetValueRepository : IRepository<FacetValue>
     {
+        Task AddOrUpdateAsync(FacetValue entity);
     }
 }

@@ -46,6 +46,10 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             var facet = _mapper.Map<Facet>(model);
 
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.CategoryId);
+            if(category == null)
+            {
+                throw new Exception("Category does not exist");
+            }
             if(facet.Categories == null) {    
                 facet.Categories = new List<Category>();
             }

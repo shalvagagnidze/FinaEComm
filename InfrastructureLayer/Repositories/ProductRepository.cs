@@ -23,7 +23,9 @@ namespace InfrastructureLayer.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Include(product => product.ProductFacetValues)
+                .ThenInclude(product => product.FacetValue)
+                .ThenInclude(product => product.Facet).ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(Guid id)

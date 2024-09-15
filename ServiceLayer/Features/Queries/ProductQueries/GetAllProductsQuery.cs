@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.Queries.ProductQueries
 {
-    public record GetAllProductsQuery : IRequest<IEnumerable<ProductModel>>;
+    public record GetAllProductsQuery : IRequest<IEnumerable<ProductResponseModel>>;
 
 }

@@ -53,5 +53,18 @@ namespace InfrastructureLayer.Repositories
         {
             _dbSet.Update(entity);
         }
+
+        public async Task AddOrUpdateAsync(FacetValue entity)
+        {
+            var existingEntity = await _dbSet.FindAsync(entity.Id);
+            if (existingEntity == null)
+            {
+                await _dbSet.AddAsync(entity);
+            }
+            else
+            {
+                _dbSet.Entry(entity).CurrentValues.SetValues(entity);
+            }
+        }
     }
 }

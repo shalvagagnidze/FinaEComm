@@ -1,6 +1,9 @@
-﻿using DomainLayer.Entities.Facets;
+﻿using AutoMapper;
+using DomainLayer.Entities;
+using DomainLayer.Entities.Facets;
 using DomainLayer.Interfaces;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using ServiceLayer.Features.Commands.FacetCommands;
 using ServiceLayer.Features.Commands.ProductCommands;
 using System;
@@ -14,9 +17,12 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
     public class UpdateFacetCommandHandler : IRequestHandler<UpdateFacetCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateFacetCommandHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+
+        public UpdateFacetCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateFacetCommand request, CancellationToken cancellationToken)
@@ -32,40 +38,25 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             existingFacet.DisplayType = request.model.DisplayType;
             existingFacet.IsCustom = request.model.IsCustom;
 
-            if (request.model.FacetValues != null)
+            var updatedFacetValues = request.model.FacetValues;
+            if (!updatedFacetValues.IsNullOrEmpty())
             {
-                var existingFacetValues = existingFacet.FacetValues.ToList();
-                var updatedFacetValueIds = request.model.FacetValues.Select(v => v.Id).ToList();
-
-                foreach (var existingFacetValue in existingFacetValues.ToList())
+                foreach(var facetValueModel in updatedFacetValues)
                 {
-                    if (!updatedFacetValueIds.Contains(existingFacetValue.Id))
-                    {
-                        existingFacet.FacetValues.Remove(existingFacetValue);
-                    }
-                }
-
-                foreach (var facetValueDto in request.model.FacetValues)
-                {
-                    var existingFacetValue = existingFacetValues.SingleOrDefault(v => v.Id == facetValueDto.Id);
-                    if (existingFacetValue != null)
-                    {
-                        existingFacetValue.Value = facetValueDto.Value;
-                    }
-                    else
-                    {
-                        var newFacetValue = new FacetValue
-                        {
-                            Id = Guid.NewGuid(),
-                            Value = facetValueDto.Value,
-                            FacetId = existingFacet.Id
-                        };
-                        existingFacet.FacetValues.Add(newFacetValue);
-                    }
+                    var facetValue = _mapper.Map<FacetValue>(facetValueModel);
+                    facetValue.FacetId = existingFacet.Id;
+                    await _unitOfWork.FacetValueRepository.AddOrUpdateAsync(facetValue);
                 }
             }
 
-            _unitOfWork.FacetRepository.Update(existingFacet);
+            if (!request.model.CategoryIds.IsNullOrEmpty())
+            {
+                foreach (var categoryId in request.model.CategoryIds)
+                {
+                    var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category values are not valid");
+                    existingFacet.Categories?.Add(category);
+                }
+            }
 
             await _unitOfWork.SaveAsync();
 

@@ -16,6 +16,8 @@ namespace ServiceLayer.Models
         public FacetTypeEnum DisplayType { get; set; }
         public bool IsCustom { get; set; }
 
+        //category list
+        public List<Guid> CategoryIds { get; set; }
         public List<FacetValueModel> FacetValues { get; set; }
     }
 }

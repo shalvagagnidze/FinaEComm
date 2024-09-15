@@ -26,6 +26,12 @@ namespace ServiceLayer.Mapping
             CreateMap<FacetValue, FacetValueModel>();
             CreateMap<FacetModel, Facet>();
             CreateMap<Facet, FacetModel>();
+            CreateMap<ProductFacetValue, ProductFacetValueModel>();
+            CreateMap<ProductFacetValueModel, ProductFacetValue>();
+            CreateMap<Product, ProductResponseModel>();
+            CreateMap<ProductFacetValue, ProductFacetValueResponseModel>()
+                .ForMember(fv => fv.FacetName, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue.Facet.Name))
+                .ForMember(fv => fv.FacetValue, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue.Value));
         }
     }
 }
