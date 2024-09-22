@@ -1,7 +1,4 @@
 ﻿using DomainLayer.Common.Enums;
-
-namespace DomainLayer.Entities;
-
 namespace DomainLayer.Entities.Products
 {
     public class Product : BaseEntity

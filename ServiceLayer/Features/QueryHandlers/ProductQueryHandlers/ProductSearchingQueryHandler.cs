@@ -37,27 +37,26 @@ public class ProductSearchingQueryHandler : IRequestHandler<ProductSearchingQuer
             productQuery = productQuery.OrderBy(GetSortProperty(request));
         }
 
-            var productModelsQuery = productQuery.Select(b => new ProductModel
-            {
-                Id = b.Id,
-                Name = b.Name,
-                Price = b.Price,
-                Status = b.Status,
-                Condition = b.Condition,
-                Description = b.Description
-            });
+        var productModelsQuery = productQuery.Select(b => new ProductModel
+        {
+            Id = b.Id,
+            Name = b.Name,
+            Price = b.Price,
+            Status = b.Status,
+            Condition = b.Condition,
+            Description = b.Description
+        });
 
         var products = await PagedList<ProductModel>.CreateAsync(productModelsQuery, request.Page, request.PageSize);
 
         return products;
     }
 
-        private static Expression<Func<Product, object>> GetSortProperty(ProductSearchingQuery request) =>
-      request.SortColumn?.ToLower() switch
-      {
-          "name" => product => product.Name!,
-          "price" => product => product.Price,
-          _ => product => product.Id
-      };
-    }
+    private static Expression<Func<Product, object>> GetSortProperty(ProductSearchingQuery request) =>
+  request.SortColumn?.ToLower() switch
+  {
+      "name" => product => product.Name!,
+      "price" => product => product.Price,
+      _ => product => product.Id
+  };
 }

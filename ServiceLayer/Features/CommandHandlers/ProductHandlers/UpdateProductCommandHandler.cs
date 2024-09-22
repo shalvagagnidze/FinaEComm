@@ -1,4 +1,5 @@
-﻿using DomainLayer.Interfaces;
+﻿using DomainLayer.Entities.Products;
+using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Interfaces;

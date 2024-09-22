@@ -1,6 +1,7 @@
 ﻿using DomainLayer.Common.Enums;
 using DomainLayer.Entities.Products;
 using MediatR;
+using ServiceLayer.Models;
 
 namespace ServiceLayer.Features.Commands.ProductCommands
 {

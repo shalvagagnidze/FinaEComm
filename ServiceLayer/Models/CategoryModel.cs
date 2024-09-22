@@ -1,6 +1,4 @@
-﻿namespace ServiceLayer.Models;
-
-namespace ServiceLayer.Models
+﻿namespace ServiceLayer.Models
 {
     public class CategoryModel
     {
@@ -12,4 +10,5 @@ namespace ServiceLayer.Models
         {
             get; set;
         }
+    }
 }

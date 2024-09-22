@@ -1,8 +1,6 @@
 ﻿using DomainLayer.Interfaces;
 using InfrastructureLayer.Repositories;
 
-namespace InfrastructureLayer.Data;
-
 namespace InfrastructureLayer.Data
 {
     public class UnitOfWork : IUnitOfWork

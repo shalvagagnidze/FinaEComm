@@ -4,12 +4,6 @@ using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Queries.CategoryQueries;
 using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Features.QueryHandlers.CategoryQueryHandlers
 {

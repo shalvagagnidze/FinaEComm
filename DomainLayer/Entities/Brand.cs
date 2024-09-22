@@ -1,4 +1,6 @@
-﻿namespace DomainLayer.Entities;
+﻿using DomainLayer.Entities.Products;
+
+namespace DomainLayer.Entities;
 
 public class Brand : BaseEntity
 {

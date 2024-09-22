@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Models;
 using System;
+using Microsoft.Extensions.Hosting;
 
 namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
 {
@@ -16,10 +17,12 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CreateProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IWebHostEnvironment _environment;
+        public CreateProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _environment = environment;
         }
         public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
@@ -58,9 +61,9 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                 Images = images
             };
 
-        var product = _mapper.Map<Product>(model);
-        var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.BrandId);
-        var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.CategoryId);
+            var product = _mapper.Map<Product>(model);
+            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.BrandId);
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.CategoryId);
 
             product.Brand = brand;
             product.Category = category;
@@ -84,6 +87,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
 
             await _unitOfWork.SaveAsync();
 
-        return product.Id;
+            return product.Id;
+        }
     }
 }

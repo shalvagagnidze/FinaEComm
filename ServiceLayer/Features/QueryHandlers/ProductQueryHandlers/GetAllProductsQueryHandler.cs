@@ -15,7 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers;
 
-public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductModel>>
+public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductResponseModel>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;

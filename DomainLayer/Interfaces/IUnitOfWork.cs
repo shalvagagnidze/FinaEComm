@@ -1,6 +1,4 @@
-﻿namespace DomainLayer.Interfaces;
-
-namespace DomainLayer.Interfaces
+﻿namespace DomainLayer.Interfaces
 {
     public interface IUnitOfWork
     {

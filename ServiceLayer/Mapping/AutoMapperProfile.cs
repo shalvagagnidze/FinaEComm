@@ -5,8 +5,6 @@ using DomainLayer.Entities.Products;
 using ServiceLayer.Features.Commands.FacetCommands;
 using ServiceLayer.Models;
 
-namespace ServiceLayer.Mapping;
-
 namespace ServiceLayer.Mapping
 {
     public class AutoMapperProfile : Profile
