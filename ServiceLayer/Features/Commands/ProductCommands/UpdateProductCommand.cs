@@ -1,13 +1,6 @@
 ﻿using MediatR;
 using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Commands.ProductCommands
-{
-    public record UpdateProductCommand(ProductModel model) : IRequest<Unit>;
+namespace ServiceLayer.Features.Commands.ProductCommands;
 
-}
+public record UpdateProductCommand(ProductModel model) : IRequest<Unit>;

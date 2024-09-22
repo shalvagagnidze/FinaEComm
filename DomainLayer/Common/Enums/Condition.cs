@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DomainLayer.Common.Enums;
 
-namespace DomainLayer.Common.Enums
+public enum Condition
 {
-    public enum Condition
-    {
-        New = 0,
-        Used = 1
-    }
+    New = 0,
+    Used = 1,
+    LikeNew = 2
 }

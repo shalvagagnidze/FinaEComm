@@ -1,36 +1,46 @@
-﻿using AutoMapper;
-using DomainLayer.Interfaces;
+﻿using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.ProductCommands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DomainLayer.Entities.Products;
+using ServiceLayer.Interfaces;
 
-namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
+namespace ServiceLayer.Features.CommandHandlers.ProductHandlers;
+
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Unit>
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Unit>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IFileService _fileService;
+    public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UpdateProductCommandHandler(IUnitOfWork unitOfWork)
+        _unitOfWork = unitOfWork;
+        _fileService = fileService;
+    }
+    public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    {
+        var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(request.model.Id);
+
+        if (existingProduct is null)
         {
-            _unitOfWork = unitOfWork;
+            throw new ArgumentNullException(nameof(existingProduct), "Product not found");
         }
-        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+
+
+        var oldImages = existingProduct.Images;
+
+        existingProduct.Name = request.model.Name;
+        existingProduct.Price = request.model.Price;
+        existingProduct.Status = request.model.Status;
+        existingProduct.Description = request.model.Description;
+        existingProduct.Images = request.model.Images;
+
+        if (request.model.Images != null)
         {
-            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(request.model.Id);
-
-            if (existingProduct is null)
+            foreach(var image in oldImages!)
             {
-                throw new ArgumentNullException(nameof(existingProduct), "Product not found");
-            }
+                _fileService.DeleteFile(image);
+            }              
+        }
+            
 
-            existingProduct.Name = request.model.Name;
-            existingProduct.Price = request.model.Price;
-            existingProduct.Status = request.model.Status;
-            existingProduct.Description = request.model.Description;
 
             if (request.model.ProductFacetValues != null)
             {
@@ -45,9 +55,8 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
 
             _unitOfWork.ProductRepository.Update(existingProduct);
 
-            await _unitOfWork.SaveAsync();
+        await _unitOfWork.SaveAsync();
 
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

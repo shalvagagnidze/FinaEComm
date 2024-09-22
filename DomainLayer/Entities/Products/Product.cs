@@ -1,13 +1,6 @@
 ﻿using DomainLayer.Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
+namespace DomainLayer.Entities;
 
 namespace DomainLayer.Entities.Products
 {
@@ -20,6 +13,7 @@ namespace DomainLayer.Entities.Products
         public Condition Condition { get; set; }
         public ICollection<ProductFacetValue>? ProductFacetValues { get; set; }
         public string? Description { get; set; }
+        public List<string>? Images { get; set; }
         public Category? Category { get; set; }
         public Brand? Brand { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -29,6 +23,6 @@ namespace DomainLayer.Entities.Products
         {
             isDeleted = true;
         }
+        }
 
-    }
 }

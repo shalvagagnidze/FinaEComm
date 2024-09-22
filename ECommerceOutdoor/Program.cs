@@ -1,6 +1,8 @@
 using InfrastructureLayer;
+using Microsoft.Extensions.FileProviders;
 using ServiceLayer;
 using ServiceLayer.Services;
+using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
-
+builder.Services.AddMvc(options =>
+{
+    options.ModelBinderProviders.InsertBodyOrDefaultBinding();
+});
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); ;
+        });
+});
 var app = builder.Build();
 
 await SeedData.SeedRoleAsync(app);
@@ -23,6 +36,24 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Resources"
+});
+
+app.UseStaticFiles();
+
+app.UseCors();
 
 app.UseAuthorization();
 

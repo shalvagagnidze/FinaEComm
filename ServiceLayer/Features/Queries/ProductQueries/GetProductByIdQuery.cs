@@ -1,13 +1,6 @@
 ﻿using MediatR;
 using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Queries.ProductQueries
-{
-    public record GetProductByIdQuery(Guid id) : IRequest<ProductModel>;
+namespace ServiceLayer.Features.Queries.ProductQueries;
 
-}
+public record GetProductByIdQuery(Guid id) : IRequest<ProductModel>;

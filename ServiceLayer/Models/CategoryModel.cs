@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ServiceLayer.Models;
 
 namespace ServiceLayer.Models
 {
@@ -12,5 +8,8 @@ namespace ServiceLayer.Models
         public string? Name { get; set; }
         public string? Description { get; set; }
         public ICollection<FacetModel> Facets { get; set; } = new List<FacetModel>();
-    }
+        public Guid? ParentId
+        {
+            get; set;
+        }
 }

@@ -3,20 +3,15 @@ using DomainLayer.Entities.Facets;
 using DomainLayer.Entities.Products;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InfrastructureLayer.Data
+namespace InfrastructureLayer.Data;
+
+public class ECommerceDbContext : IdentityDbContext
 {
-    public class ECommerceDbContext : IdentityDbContext
+    public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
     {
-        public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
-        {
-            
-        }
+        
+    }
 
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -25,22 +20,22 @@ namespace InfrastructureLayer.Data
         public DbSet<FacetValue> FacetValues { get; set; }
         public DbSet<ProductFacetValue> ProductFacetValues { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Brand>().HasQueryFilter(brand => !brand.IsDeleted);
             modelBuilder.Entity<Category>().HasQueryFilter(category => !category.IsDeleted);
             modelBuilder.Entity<Product>().HasQueryFilter(product => !product.isDeleted);
             modelBuilder.Entity<ProductFacetValue>().HasQueryFilter(pfv => !pfv.Product.isDeleted);
 
-            modelBuilder.Entity<Brand>()
-                        .HasMany(product => product.Products)
-                        .WithOne(brand => brand.Brand);
+        modelBuilder.Entity<Brand>()
+                    .HasMany(product => product.Products)
+                    .WithOne(brand => brand.Brand);
 
-            modelBuilder.Entity<Category>()
-                        .HasMany(products => products.Products)
-                        .WithOne(category => category.Category);
+        modelBuilder.Entity<Category>()
+                    .HasMany(products => products.Products)
+                    .WithOne(category => category.Category);
 
             modelBuilder.Entity<Category>()
                         .HasMany(cat => cat.Facets)

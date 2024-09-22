@@ -1,5 +1,7 @@
 ﻿using DomainLayer.Common.Enums;
 
+namespace ServiceLayer.Models;
+
 namespace ServiceLayer.Models
 {
     public class FilterModel

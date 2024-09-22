@@ -4,11 +4,8 @@ using DomainLayer.Entities.Facets;
 using DomainLayer.Entities.Products;
 using ServiceLayer.Features.Commands.FacetCommands;
 using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+namespace ServiceLayer.Mapping;
 
 namespace ServiceLayer.Mapping
 {

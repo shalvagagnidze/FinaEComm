@@ -1,40 +1,32 @@
-﻿using AutoMapper;
-using DomainLayer.Interfaces;
+﻿using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.BrandCommands;
-using ServiceLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.CommandHandlers.BrandHandlers
+namespace ServiceLayer.Features.CommandHandlers.BrandHandlers;
+
+public class DeleteBrandByIdCommandHandler : IRequestHandler<DeleteBrandByIdCommand>
 {
-    public class DeleteBrandByIdCommandHandler : IRequestHandler<DeleteBrandByIdCommand>
+    private readonly IUnitOfWork _unitOfWork;
+    public DeleteBrandByIdCommandHandler(IUnitOfWork unitOfWork)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public DeleteBrandByIdCommandHandler(IUnitOfWork unitOfWork)
+        _unitOfWork = unitOfWork;
+    }
+    public async Task Handle(DeleteBrandByIdCommand request, CancellationToken cancellationToken)
+    {
+        var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.Id);
+
+        if (brand is null)
         {
-            _unitOfWork = unitOfWork;
+            throw new ArgumentNullException(nameof(brand), "Brand not found");
         }
-        public async Task Handle(DeleteBrandByIdCommand request, CancellationToken cancellationToken)
-        {
-            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.Id);
 
-            if (brand is null)
-            {
-                throw new ArgumentNullException(nameof(brand), "Brand not found");
-            }
+        await _unitOfWork.BrandRepository.DeleteByIdAsync(request.Id);
+        
+        brand.DeleteTime = DateTime.UtcNow;
 
-            await _unitOfWork.BrandRepository.DeleteByIdAsync(request.Id);
-            
-            brand.DeleteTime = DateTime.UtcNow;
+        _unitOfWork.BrandRepository.Update(brand);
 
-            _unitOfWork.BrandRepository.Update(brand);
-
-            await _unitOfWork.SaveAsync();
-      
-        }
+        await _unitOfWork.SaveAsync();
+  
     }
 }
