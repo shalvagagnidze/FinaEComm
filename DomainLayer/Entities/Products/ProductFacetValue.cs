@@ -10,8 +10,8 @@ namespace DomainLayer.Entities.Products
     public class ProductFacetValue : BaseEntity
     {
         public Guid ProductId { get; set; }
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
         public Guid FacetValueId { get; set; }
-        public FacetValue FacetValue { get; set; }
+        public FacetValue? FacetValue { get; set; }
     }
 }

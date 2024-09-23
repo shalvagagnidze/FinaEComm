@@ -8,9 +8,9 @@ namespace DomainLayer.Entities.Facets
 {
     public class FacetValue : BaseEntity
     {
-        public string Value { get; set; }
+        public string? Value { get; set; }
         public Guid FacetId { get; set; }
 
-        public Facet Facet { get; set; }
+        public Facet? Facet { get; set; }
     }
 }

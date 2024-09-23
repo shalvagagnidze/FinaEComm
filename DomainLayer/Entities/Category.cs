@@ -12,7 +12,7 @@ namespace DomainLayer.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime DeleteTime { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<Facet> Facets { get; set; }
+        public ICollection<Facet>? Facets { get; set; }
         public void DeleteCategory()
         {
             IsDeleted = true;

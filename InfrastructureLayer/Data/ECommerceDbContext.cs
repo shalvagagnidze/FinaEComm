@@ -27,7 +27,7 @@ public class ECommerceDbContext : IdentityDbContext
         modelBuilder.Entity<Brand>().HasQueryFilter(brand => !brand.IsDeleted);
         modelBuilder.Entity<Category>().HasQueryFilter(category => !category.IsDeleted);
         modelBuilder.Entity<Product>().HasQueryFilter(product => !product.isDeleted);
-        modelBuilder.Entity<ProductFacetValue>().HasQueryFilter(pfv => !pfv.Product.isDeleted);
+        modelBuilder.Entity<ProductFacetValue>().HasQueryFilter(pfv => !pfv.Product!.isDeleted);
 
         modelBuilder.Entity<Brand>()
                     .HasMany(product => product.Products)
