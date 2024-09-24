@@ -1,11 +1,25 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using ServiceLayer.Interfaces;
 
 namespace ServiceLayer.Services;
 
-public class FileService(IWebHostEnvironment environment) : IFileService
+public class FileService : IFileService
 {
+
+    private readonly IWebHostEnvironment _environment;
+    private readonly IMemoryCache _cache;
+    private readonly ILogger<FileService> _logger;
+
+    public FileService(IWebHostEnvironment environment, IMemoryCache cache,ILogger<FileService> logger)
+    {
+        _environment = environment;
+        _cache = cache;
+        _logger = logger;
+    }
+
     public async Task<List<string>> SaveFileAsync(List<IFormFile> imageFiles, string[] allowedFileExtensions)
     {
         if (imageFiles == null || !imageFiles.Any())
@@ -13,7 +27,7 @@ public class FileService(IWebHostEnvironment environment) : IFileService
             throw new ArgumentNullException(nameof(imageFiles));
         }
 
-        var contentPath = environment.ContentRootPath;
+        var contentPath = _environment.ContentRootPath;
         var path = Path.Combine(contentPath, "Images");
         // path = "c://projects/ImageManipulation.Ap/uploads" ,not exactly, but something like that
 
@@ -23,10 +37,10 @@ public class FileService(IWebHostEnvironment environment) : IFileService
         }
 
         var fileNames = new List<string>();
-        // Check the allowed extenstions
-        foreach(var imageFile in imageFiles)
+
+        foreach (var imageFile in imageFiles)
         {
-            if (imageFile.Length > 2097152) 
+            if (imageFile.Length > 2097152)
             {
                 throw new ArgumentException("File size should not exceed 2 MB");
             }
@@ -45,10 +59,13 @@ public class FileService(IWebHostEnvironment environment) : IFileService
             //fileNames.Add(fileName);
 
             fileNames.Add(fileNameWithPath);
+
+            _cache.Set(fileName, fileNameWithPath, TimeSpan.FromMinutes(30));
+            _logger.LogInformation($"Cached file path: {fileNameWithPath}");
         }
-        
+
         return fileNames;
-        
+
     }
 
 
@@ -58,7 +75,7 @@ public class FileService(IWebHostEnvironment environment) : IFileService
         {
             throw new ArgumentNullException(nameof(fileNameWithExtension));
         }
-        var contentPath = environment.ContentRootPath;
+        var contentPath = _environment.ContentRootPath;
         var path = Path.Combine(contentPath, $"Images", fileNameWithExtension);
 
         if (!File.Exists(path))
@@ -66,5 +83,7 @@ public class FileService(IWebHostEnvironment environment) : IFileService
             throw new FileNotFoundException($"Invalid file path");
         }
         File.Delete(path);
+
+        _cache.Remove(path);
     }
 }
