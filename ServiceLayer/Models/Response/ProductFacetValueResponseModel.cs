@@ -11,7 +11,7 @@ namespace ServiceLayer.Models
 {
     public class ProductFacetValueResponseModel
     {
-        public string FacetName { get; set; }
-        public string FacetValue { get; set; }
+        public string? FacetName { get; set; }
+        public string? FacetValue { get; set; }
     }
 }
