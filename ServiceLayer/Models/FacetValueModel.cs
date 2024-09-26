@@ -8,6 +8,6 @@ namespace ServiceLayer.Models
 {
     public class FacetValueModel
     {
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 }

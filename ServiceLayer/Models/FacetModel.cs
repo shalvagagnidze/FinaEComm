@@ -12,12 +12,12 @@ namespace ServiceLayer.Models
     public class FacetModel
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public FacetTypeEnum DisplayType { get; set; }
         public bool IsCustom { get; set; }
 
         //category list
-        public List<Guid> CategoryIds { get; set; }
-        public List<FacetValueModel> FacetValues { get; set; }
+        public List<Guid>? CategoryIds { get; set; }
+        public List<FacetValueModel>? FacetValues { get; set; }
     }
 }

@@ -107,7 +107,7 @@ public class AuthService : IAuthService
 
         var securityToken = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddMinutes(60),
+            expires: DateTime.Now.AddMonths(12), //Change this to 2 hours
             issuer: _config.GetSection("Jwt:Issuer").Value,
             audience: _config.GetSection("Jwt:Audience").Value,
             signingCredentials: signingCred);
