@@ -16,17 +16,20 @@ public class ProductRepository : IProductRepository
         _dbSet = dbSet;
     }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
-        {
-            return await _dbSet.Include(product => product.ProductFacetValues)
-                .ThenInclude(product => product.FacetValue)
-                .ThenInclude(product => product.Facet).ToListAsync();
-        }
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        return await _dbSet.Include(product => product.ProductFacetValues)
+            .ThenInclude(product => product.FacetValue)
+            .ThenInclude(product => product.Facet).ToListAsync();
+    }
 
     public async Task<Product> GetByIdAsync(Guid id)
     {
-        var product = await _dbSet.FindAsync(id);
-
+        //var product = await _dbSet.FindAsync(id);
+        var product = await _dbSet.Include(prod => prod.ProductFacetValues)
+                                  .ThenInclude(prod => prod.FacetValue)
+                                  .ThenInclude(prod => prod.Facet)
+                                  .FirstOrDefaultAsync(prod => prod.Id == id);
         return product!;
     }
 

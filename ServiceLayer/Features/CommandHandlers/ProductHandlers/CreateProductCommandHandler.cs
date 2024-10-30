@@ -79,7 +79,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                 var productFacet = new DomainLayer.Entities.Products.ProductFacetValue
                 {
                     FacetValueId = facet.FacetValueId,
-                    ProductId = product.Id
+                    ProductId = product.Id                  
                 };
 
                 product.ProductFacetValues.Add(productFacet);
