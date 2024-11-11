@@ -23,7 +23,10 @@ namespace ServiceLayer.Mapping
             CreateMap<Facet, FacetModel>();
             CreateMap<ProductFacetValue, ProductFacetValueModel>();
             CreateMap<ProductFacetValueModel, ProductFacetValue>();
-            CreateMap<Product, ProductResponseModel>();
+            CreateMap<Product, ProductResponseModel>()
+                    .ForMember(prodResp => prodResp.Brand, prod => prod.MapFrom(product => product.Brand))
+                    .ForMember(prodResp => prodResp.Category, cat => cat.MapFrom(product => product.Category))
+                    .ReverseMap();
             CreateMap<ProductFacetValue, ProductFacetValueResponseModel>()
                 .ForMember(fv => fv.FacetName, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue!.Facet!.Name))
                 .ForMember(fv => fv.FacetValue, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue!.Value));

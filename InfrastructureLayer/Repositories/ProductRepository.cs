@@ -18,7 +18,9 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _dbSet.Include(product => product.ProductFacetValues)
+        return await _dbSet.Include(category => category.Category)
+            .Include(brand => brand.Brand)
+            .Include(product => product.ProductFacetValues)
             .ThenInclude(product => product.FacetValue)
             .ThenInclude(product => product.Facet).ToListAsync();
     }
