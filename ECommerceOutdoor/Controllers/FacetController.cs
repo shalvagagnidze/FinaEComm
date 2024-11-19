@@ -21,6 +21,15 @@ namespace ECommerceOutdoor.Controllers
             return Ok(facets);
         }
 
+        [HttpGet("get-facet-by-id")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetFacetById(Guid facetId)
+        {
+            var facet = await Mediator.Send(new GetFacetWithValuesQuery(facetId));
+
+            return Ok(facet);
+        }
+
         [HttpPost("add-facet")]
         [ProducesResponseType(200)]
         [Authorize(Roles = "Admin,Moderator")]
@@ -44,9 +53,9 @@ namespace ECommerceOutdoor.Controllers
         [HttpDelete("delete-facet")]
         [ProducesResponseType(200)]
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> DeleteFacet(FacetModel model)
+        public async Task<IActionResult> DeleteFacet(Guid facetId)
         {
-            await Mediator.Send(new DeleteFacetCommand(model));
+            await Mediator.Send(new DeleteFacetCommand(facetId));
 
             return Ok();
         }

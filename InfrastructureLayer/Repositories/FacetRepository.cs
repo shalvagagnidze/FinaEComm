@@ -32,7 +32,7 @@ namespace InfrastructureLayer.Repositories
 
         public async Task DeleteByIdAsync(Guid id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            var entity = await _dbSet.Include(fa => fa.FacetValues).FirstOrDefaultAsync(fa => fa.Id == id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);

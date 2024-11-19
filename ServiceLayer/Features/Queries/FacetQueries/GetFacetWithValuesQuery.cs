@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Features.Commands.FacetCommands
+namespace ServiceLayer.Features.Queries.FacetQueries
 {
-    public record DeleteFacetCommand(Guid facetId) : IRequest;
+    public record GetFacetWithValuesQuery(Guid facetId) : IRequest<FacetModel>;
+
 }
