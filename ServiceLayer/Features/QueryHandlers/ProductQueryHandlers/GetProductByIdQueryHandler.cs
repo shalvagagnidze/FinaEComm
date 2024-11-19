@@ -6,7 +6,7 @@ using ServiceLayer.Models;
 
 namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers;
 
-public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductModel>
+public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductResponseModel>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -15,11 +15,11 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<ProductModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProductResponseModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var model = await _unitOfWork.ProductRepository.GetByIdAsync(request.id);
 
-        var product = _mapper.Map<ProductModel>(model);
+        var product = _mapper.Map<ProductResponseModel>(model);
 
         return product;
     }
