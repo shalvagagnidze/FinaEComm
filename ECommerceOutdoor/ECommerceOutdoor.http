@@ -4,3 +4,7 @@ GET {{ECommerceOutdoor_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{ECommerceOutdoor_HostAddress}}/brand/get-all-brands
+
+###

@@ -50,5 +50,15 @@ namespace ECommerceOutdoor.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("delete-facet-by-{id}")]
+        [ProducesResponseType(200)]
+        [Authorize(Roles = "Admin,Moderator")]
+        public async Task<IActionResult> DeleteFacetById(Guid id)
+        {
+            await Mediator.Send(new DeleteFacetByIdCommand(id));
+
+            return Ok();
+        }
     }
 }
