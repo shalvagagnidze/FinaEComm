@@ -31,8 +31,8 @@ namespace ServiceLayer.Features.QueryHandlers.FacetQueryHandlers
                 return Enumerable.Empty<FacetModel>();
             }
 
-            models = models.Where(f => !f.Categories.IsNullOrEmpty())
-                .Where(f => f.Categories.Any(c => c.Id == request.categoryId));
+            models = models.Where(f => !f.Categories!.Any())
+                .Where(f => f.Categories!.Any(c => c.Id == request.categoryId));
 
             var facets = _mapper.Map<IEnumerable<FacetModel>>(models);
 

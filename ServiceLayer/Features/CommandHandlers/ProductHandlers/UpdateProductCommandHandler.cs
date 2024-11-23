@@ -3,6 +3,8 @@ using DomainLayer.Interfaces;
 using MediatR;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Interfaces;
+using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 namespace ServiceLayer.Features.CommandHandlers.ProductHandlers;
 
@@ -33,17 +35,21 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         existingProduct.Description = request.model.Description;
         existingProduct.Images = request.model.Images;
 
-        if (request.model.Images != null)
-        {
-            foreach(var image in oldImages!)
-            {
-                _fileService.DeleteFile(image);
-            }              
-        }
-            
+        var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.model.BrandId);
+        var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.model.CategoryId);
 
+        existingProduct.Brand = brand;
+        existingProduct.Category = category;
 
-            if (request.model.ProductFacetValues != null)
+        //if (request.model.Images != null)
+        //{
+        //    foreach(var image in oldImages!)
+        //    {
+        //        _fileService.DeleteFile(image);
+        //    }              
+        //}
+
+        if (request.model.ProductFacetValues != null)
             {
                 var productFacetValues = request.model.ProductFacetValues.Select(facetValue => new ProductFacetValue
                 {

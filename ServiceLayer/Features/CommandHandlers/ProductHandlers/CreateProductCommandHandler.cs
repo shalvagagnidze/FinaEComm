@@ -68,13 +68,13 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             product.Brand = brand;
             product.Category = category;
             product.CreatedDate = DateTime.UtcNow;
-            if (product.ProductFacetValues.IsNullOrEmpty())
+            if (product.ProductFacetValues!.Any())
             {
                 product.ProductFacetValues = [];
             }
 
             await _unitOfWork.ProductRepository.AddAsync(product);
-            foreach (var facet in request.ProductFacetValues)
+            foreach (var facet in request.ProductFacetValues!)
             {
                 var productFacet = new DomainLayer.Entities.Products.ProductFacetValue
                 {
@@ -82,7 +82,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                     ProductId = product.Id                  
                 };
 
-                product.ProductFacetValues.Add(productFacet);
+                product.ProductFacetValues!.Add(productFacet);
             }
 
             await _unitOfWork.SaveAsync();

@@ -28,7 +28,7 @@ namespace ServiceLayer.Features.QueryHandlers.FacetQueryHandlers
 
             if (model is null)
             {
-                return null;
+                return new FacetModel();
             }
 
             var facet = _mapper.Map<FacetModel>(model);

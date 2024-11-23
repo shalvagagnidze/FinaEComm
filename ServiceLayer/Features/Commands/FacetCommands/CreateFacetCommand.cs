@@ -13,11 +13,11 @@ namespace ServiceLayer.Features.Commands.FacetCommands
 {
     public class CreateFacetCommand : IRequest<Guid>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public FacetTypeEnum DisplayType { get; set; }
         public bool IsCustom { get; set; }
         public Guid CategoryId { get; set; }
 
-        public List<FacetValueModel> FacetValues { get; set; }
+        public List<FacetValueModel>? FacetValues { get; set; }
     }
 }

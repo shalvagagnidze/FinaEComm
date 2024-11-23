@@ -12,8 +12,8 @@ namespace ServiceLayer.Models
         public Condition Condition { get; set; }
         public string? Description { get; set; }
         public List<string>? Images { get; set; }
-        public BrandModel? Brand { get; set; }
-        public CategoryModel? Category { get; set; }
+        public Guid BrandId { get; set; }
+        public Guid CategoryId { get; set; }
         public ICollection<ProductFacetValueModel> ProductFacetValues { get; set; } = new List<ProductFacetValueModel>();
     }
 }

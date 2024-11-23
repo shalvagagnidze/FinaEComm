@@ -39,9 +39,9 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             existingFacet.IsCustom = request.model.IsCustom;
 
             var updatedFacetValues = request.model.FacetValues;
-            if (!updatedFacetValues.IsNullOrEmpty())
+            if (!updatedFacetValues!.Any())
             {
-                foreach(var facetValueModel in updatedFacetValues)
+                foreach(var facetValueModel in updatedFacetValues!)
                 {
                     var facetValue = _mapper.Map<FacetValue>(facetValueModel);
                     facetValue.FacetId = existingFacet.Id;
@@ -49,9 +49,9 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
                 }
             }
 
-            if (!request.model.CategoryIds.IsNullOrEmpty())
+            if (!request.model.CategoryIds!.Any())
             {
-                foreach (var categoryId in request.model.CategoryIds)
+                foreach (var categoryId in request.model.CategoryIds!)
                 {
                     var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category values are not valid");
                     existingFacet.Categories?.Add(category);
