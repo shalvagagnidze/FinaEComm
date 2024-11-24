@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Amazon.S3;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using ServiceLayer.Features.Commands.ImageCommands;
 using ServiceLayer.Features.Commands.ProductCommands;
 using ServiceLayer.Features.Queries.ProductQueries;
 using ServiceLayer.Interfaces;
@@ -9,7 +12,7 @@ namespace ECommerceOutdoor.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController(IFileService fileService) : ApiControllerBase
+public class ProductController() : ApiControllerBase
 {
     [HttpGet("get-all-products")]
     [ProducesResponseType(200)]
@@ -73,26 +76,45 @@ public class ProductController(IFileService fileService) : ApiControllerBase
         return Ok(images);
     }
 
-    [HttpPost("upload-images")]
+    //[HttpPost("upload-images")]
+    //[ProducesResponseType(200)]
+    //[ProducesResponseType(401)]
+    //[Authorize(Roles = "Admin,Moderator")]
+    //public async Task<IActionResult> UploadImage([FromForm] List<IFormFile> imageFiles)
+    //{
+    //    try
+    //    {
+    //        string[] allowedFileExtensions = new[] { ".jpg", ".jpeg", ".png" };
+
+    //        var createdImageNames = await fileService.SaveFileAsync(imageFiles, allowedFileExtensions);
+
+    //        return Ok(createdImageNames);
+    //    }
+    //    catch (Exception)
+    //    {
+
+    //        throw;
+    //    }
+    //}
+
+    [HttpPost("images")]
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
     [Authorize(Roles = "Admin,Moderator")]
-    public async Task<IActionResult> UploadImage([FromForm] List<IFormFile> imageFiles)
+    public async Task<IActionResult> UploadImage([FromForm]UploadImageCommand command)
     {
         try
         {
-            string[] allowedFileExtensions = new[] { ".jpg", ".jpeg", ".png" };
+            var imageUrls = await Mediator.Send(command);
 
-            var createdImageNames = await fileService.SaveFileAsync(imageFiles, allowedFileExtensions);
-
-            return Ok(createdImageNames);
+            return Ok(imageUrls);
         }
         catch (Exception)
         {
-
             throw;
         }
     }
+
 
     [HttpPost("add-product")]
     [ProducesResponseType(200)]
@@ -145,5 +167,16 @@ public class ProductController(IFileService fileService) : ApiControllerBase
         await Mediator.Send(new DeleteProductByIdCommand(id));
 
         return Ok("Product deleted successfully!");
+    }
+
+    [HttpDelete("delete-image-{key}-by-product-{id}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteImage(Guid id,string key)
+    {
+        await Mediator.Send(new DeleteImageCommand(id,key));
+
+        return Ok("Image deleted successfully!");
     }
 }

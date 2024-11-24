@@ -1,7 +1,12 @@
+using Amazon;
+using Amazon.S3;
 using InfrastructureLayer;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using ServiceLayer;
+using ServiceLayer.Models;
 using ServiceLayer.Services;
+using System.Runtime;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +20,26 @@ builder.Services.AddMvc(options =>
 {
     options.ModelBinderProviders.InsertBodyOrDefaultBinding();
 });
+
+builder.Services.Configure<S3Settings>(builder.Configuration.GetSection("S3Settings"));
+
+var awsCredentials = new Amazon.Runtime.BasicAWSCredentials(
+    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY")
+);
+
+
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var s3Settings = sp.GetRequiredService<IOptions<S3Settings>>().Value;
+    var config = new AmazonS3Config
+    {
+        RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region)
+    };
+
+    return new AmazonS3Client(awsCredentials,config);
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(

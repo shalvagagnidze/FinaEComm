@@ -13,12 +13,12 @@ public class ECommerceDbContext : IdentityDbContext
 
     }
 
-    public DbSet<Brand> Brands { get; set; }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Facet> Facets { get; set; }
-    public DbSet<FacetValue> FacetValues { get; set; }
-    public DbSet<ProductFacetValue> ProductFacetValues { get; set; }
+    public DbSet<Brand>? Brands { get; set; }
+    public DbSet<Category>? Categories { get; set; }
+    public DbSet<Product>? Products { get; set; }
+    public DbSet<Facet>? Facets { get; set; }
+    public DbSet<FacetValue>? FacetValues { get; set; }
+    public DbSet<ProductFacetValue>? ProductFacetValues { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
