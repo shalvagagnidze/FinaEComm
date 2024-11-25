@@ -68,7 +68,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             product.Brand = brand;
             product.Category = category;
             product.CreatedDate = DateTime.UtcNow;
-            if (product.ProductFacetValues!.Any())
+            if (!product.ProductFacetValues!.Any())
             {
                 product.ProductFacetValues = [];
             }
