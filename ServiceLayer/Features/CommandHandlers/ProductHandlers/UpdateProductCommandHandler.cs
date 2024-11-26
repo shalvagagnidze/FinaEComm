@@ -34,6 +34,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         existingProduct.Status = request.model.Status;
         existingProduct.Description = request.model.Description;
         existingProduct.Images = request.model.Images;
+        existingProduct.Condition = request.model.Condition;
 
         var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.model.BrandId);
         var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.model.CategoryId);

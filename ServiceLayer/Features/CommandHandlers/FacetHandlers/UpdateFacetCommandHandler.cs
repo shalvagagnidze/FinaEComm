@@ -39,7 +39,7 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             existingFacet.IsCustom = request.model.IsCustom;
 
             var updatedFacetValues = request.model.FacetValues;
-            if (updatedFacetValues!.Any())
+            if (updatedFacetValues is not null && updatedFacetValues.Any())
             {
                 foreach(var facetValueModel in updatedFacetValues!)
                 {
@@ -49,7 +49,7 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
                 }
             }
 
-            if (request.model.CategoryIds!.Any())
+            if (request.model.CategoryIds is not null && request.model.CategoryIds.Any())
             {
                 foreach (var categoryId in request.model.CategoryIds!)
                 {
