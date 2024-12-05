@@ -41,12 +41,12 @@ namespace InfrastructureLayer.Repositories
 
         public async Task<IEnumerable<Facet>> GetAllAsync()
         {
-            return await _dbSet.Include(fa => fa.FacetValues).Include(fa => fa.Categories).ToListAsync();
+            return await _dbSet.AsNoTracking().Include(fa => fa.FacetValues).Include(fa => fa.Categories).ToListAsync();
         }
 
         public async Task<Facet> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Include(fa => fa.FacetValues).FirstOrDefaultAsync(fa => fa.Id == id);
+            return await _dbSet.AsNoTracking().Include(fa => fa.FacetValues).FirstOrDefaultAsync(fa => fa.Id == id);
         }
 
         public void Update(Facet entity)

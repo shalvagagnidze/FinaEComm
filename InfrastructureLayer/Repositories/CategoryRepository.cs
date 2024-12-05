@@ -15,14 +15,14 @@ public class CategoryRepository : ICategoryRepository
         _dbSet = dbSet;
     }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
-        {
-            return await _dbSet.Include(cat => cat.Facets).ToListAsync();
-        }
+    public async Task<IEnumerable<Category>> GetAllAsync()
+    {
+        return await _dbSet.AsNoTracking().Include(cat => cat.Facets).ToListAsync();
+    }
 
-        public async Task<Category> GetByIdAsync(Guid id)
-        {
-            var category = await _dbSet.Include(ca => ca.Facets).FirstOrDefaultAsync(fa => fa.Id == id);
+    public async Task<Category> GetByIdAsync(Guid id)
+    {
+        var category = await _dbSet.AsNoTracking().Include(ca => ca.Facets).FirstOrDefaultAsync(fa => fa.Id == id);
 
         return category!;
     }

@@ -37,12 +37,12 @@ namespace InfrastructureLayer.Repositories
 
         public async Task<IEnumerable<ProductFacetValue>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task<ProductFacetValue> GetByIdAsync(Guid id)
         {
-            return await _dbSet.FirstOrDefaultAsync(fa => fa.Id == id);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(fa => fa.Id == id);
         }
 
         public void Update(ProductFacetValue entity)

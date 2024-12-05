@@ -17,7 +17,7 @@ public class BrandRepository : IBrandRepository
 
     public async Task<IEnumerable<Brand>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet.AsNoTracking().ToListAsync();
     }
 
     public async Task<Brand> GetByIdAsync(Guid id)
