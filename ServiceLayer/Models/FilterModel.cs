@@ -10,6 +10,6 @@ namespace ServiceLayer.Models
         public StockStatus? StockStatus { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
-        public ICollection<FacetValueModel>? Facets { get; set; }
+        public ICollection<FacetFilterModel>? FacetFilters { get; set; }
     }
 }
