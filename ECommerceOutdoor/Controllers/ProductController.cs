@@ -54,7 +54,7 @@ public class ProductController() : ApiControllerBase
         return Ok(products);
     }
 
-    [HttpGet("get-products-by-filtering")]
+    [HttpPost("get-products-by-filtering")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetProductsByFiltering(
         FilterModel filter,
