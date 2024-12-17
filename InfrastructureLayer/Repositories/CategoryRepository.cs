@@ -17,7 +17,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<IEnumerable<Category>> GetAllAsync()
     {
-        return await _dbSet.AsNoTracking().Include(cat => cat.Facets).ToListAsync();
+        return await _dbSet.AsNoTracking().Include(cat => cat.Facets).ThenInclude(fac => fac.FacetValues).ToListAsync();
     }
 
     public async Task<Category> GetByIdAsync(Guid id)

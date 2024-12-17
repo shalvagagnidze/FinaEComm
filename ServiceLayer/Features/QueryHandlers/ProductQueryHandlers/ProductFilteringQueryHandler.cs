@@ -53,7 +53,7 @@ public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuer
 
         foreach(var ff in request.filter.FacetFilters!)
         {
-            products = products.Where(x => !x.ProductFacetValues.IsNullOrEmpty() &&  x.ProductFacetValues.Any(f => f.FacetValueId == ff.facetValueId));
+            products = products.Where(x => x.ProductFacetValues.Any() &&  x.ProductFacetValues.Any(f => f.FacetValueId == ff.facetValueId));
         }
 
         var productModelsQuery = products.Select(b => new ProductModel
