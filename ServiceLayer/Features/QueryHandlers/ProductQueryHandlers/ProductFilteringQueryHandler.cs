@@ -54,9 +54,11 @@ public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuer
             products = products.Where(x => x.Price <= request.filter.MaxPrice);
         }
 
-        foreach(var ff in request.filter.FacetFilters!)
+        if (request.filter.FacetFilters != null && request.filter.FacetFilters.Any())
         {
-            products = products.Where(x => x.ProductFacetValues.Any() &&  x.ProductFacetValues.Any(f => f.FacetValueId == ff.facetValueId));
+            var facetValueIds = request.filter.FacetFilters.Select(ff => ff.facetValueId).ToList();
+            products = products.Where(x => x.ProductFacetValues
+                                             .Any(f => facetValueIds.Contains(f.FacetValueId)));
         }
 
         var productModelsQuery = products.Select(b => new ProductModel
