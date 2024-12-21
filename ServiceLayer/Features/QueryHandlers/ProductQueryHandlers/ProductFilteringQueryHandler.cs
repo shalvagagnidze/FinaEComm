@@ -1,4 +1,5 @@
-﻿using DomainLayer.Entities;
+﻿using AutoMapper;
+using DomainLayer.Entities;
 using DomainLayer.Entities.Products;
 using InfrastructureLayer.Data;
 using MediatR;
@@ -12,10 +13,12 @@ namespace ServiceLayer.Features.QueryHandlers.ProductQueryHandlers;
 public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuery, PagedList<ProductModel>>
 {
     private readonly DbSet<Product> _dbSet;
-    public ProductFilteringQueryHandler(ECommerceDbContext db)
+    private readonly IMapper _mapper;
+    public ProductFilteringQueryHandler(ECommerceDbContext db,IMapper mapper)
     {
         var dbSet = db.Set<Product>();
         _dbSet = dbSet;
+        _mapper = mapper;
     }
     public async Task<PagedList<ProductModel>> Handle(ProductFilteringQuery request, CancellationToken cancellationToken)
     {
@@ -63,7 +66,13 @@ public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuer
             Price = b.Price,
             Status = b.Status,
             Condition = b.Condition,
-            Description = b.Description
+            Description = b.Description,
+            CategoryId = b.Category!.Id,
+            BrandId = b.Brand!.Id,
+            ProductFacetValues = b.ProductFacetValues.Select(pfv => new ProductFacetValueModel 
+            { Id = pfv.Id, 
+              FacetValueId = pfv.FacetValueId 
+            }).ToList()
         });
 
         var productsQuery = await PagedList<ProductModel>.CreateAsync(productModelsQuery, request.Page, request.PageSize);

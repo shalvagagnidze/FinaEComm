@@ -18,7 +18,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _dbSet.AsNoTracking().Include(category => category.Category)
+        return await _dbSet.Include(category => category.Category)
             .Include(brand => brand.Brand)
             .Include(product => product.ProductFacetValues)
             .ThenInclude(product => product.FacetValue)
@@ -28,7 +28,7 @@ public class ProductRepository : IProductRepository
     public async Task<Product> GetByIdAsync(Guid id)
     {
 
-        var product = await _dbSet.AsNoTracking().Include(category => category.Category)
+        var product = await _dbSet.Include(category => category.Category)
                             .Include(brand => brand.Brand)
                             .Include(product => product.ProductFacetValues)
                             .ThenInclude(product => product.FacetValue)

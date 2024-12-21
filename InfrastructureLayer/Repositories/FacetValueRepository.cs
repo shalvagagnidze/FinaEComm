@@ -41,7 +41,7 @@ namespace InfrastructureLayer.Repositories
 
         public async Task<IEnumerable<FacetValue>> GetAllAsync()
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
         public async Task<FacetValue> GetByIdAsync(Guid id)
