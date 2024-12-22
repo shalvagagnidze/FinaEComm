@@ -31,8 +31,12 @@ public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuer
 
         if (request.filter.CategoryIds!.Any())
         {
-            products = products.Where(x => request.filter.CategoryIds!.Contains(x.Category!.Id));
+            var categoryIds = request.filter.CategoryIds;
+
+            products = products.Where(x => categoryIds.Contains(x.Category!.Id) ||
+                                           categoryIds.Contains(x.Category!.ParentId!.Value));
         }
+
 
         if (request.filter.Condition!.Any())
         {
@@ -74,7 +78,8 @@ public class ProductFilteringQueryHandler : IRequestHandler<ProductFilteringQuer
             ProductFacetValues = b.ProductFacetValues.Select(pfv => new ProductFacetValueModel 
             { Id = pfv.Id, 
               FacetValueId = pfv.FacetValueId 
-            }).ToList()
+            }).ToList(),
+            Images = b.Images
         });
 
         var productsQuery = await PagedList<ProductModel>.CreateAsync(productModelsQuery, request.Page, request.PageSize);
