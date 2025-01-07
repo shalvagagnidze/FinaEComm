@@ -18,7 +18,7 @@ namespace InfrastructureLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -109,7 +109,6 @@ namespace InfrastructureLayer.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -127,7 +126,6 @@ namespace InfrastructureLayer.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -160,6 +158,9 @@ namespace InfrastructureLayer.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.PrimitiveCollection<List<string>>("Images")
+                        .HasColumnType("text[]");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

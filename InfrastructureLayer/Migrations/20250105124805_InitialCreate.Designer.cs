@@ -13,18 +13,33 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InfrastructureLayer.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20240824100314_AddProductImage")]
-    partial class AddProductImage
+    [Migration("20250105124805_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CategoryFacet", b =>
+                {
+                    b.Property<Guid>("CategoriesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FacetsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CategoriesId", "FacetsId");
+
+                    b.HasIndex("FacetsId");
+
+                    b.ToTable("CategoryFacet");
+                });
 
             modelBuilder.Entity("DomainLayer.Entities.Brand", b =>
                 {
@@ -76,12 +91,54 @@ namespace InfrastructureLayer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("DomainLayer.Entities.Product", b =>
+            modelBuilder.Entity("DomainLayer.Entities.Facets.Facet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsCustom")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Facets");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Facets.FacetValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FacetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacetId");
+
+                    b.ToTable("FacetValues");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,10 +162,7 @@ namespace InfrastructureLayer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
-
-                    b.Property<List<string>>("Images")
+                    b.PrimitiveCollection<List<string>>("Images")
                         .HasColumnType("text[]");
 
                     b.Property<string>("Name")
@@ -117,13 +171,10 @@ namespace InfrastructureLayer.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int[]>("Size")
-                        .HasColumnType("integer[]");
-
-                    b.Property<int[]>("Specifications")
-                        .HasColumnType("integer[]");
-
                     b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StockAmount")
                         .HasColumnType("integer");
 
                     b.Property<bool>("isDeleted")
@@ -136,6 +187,27 @@ namespace InfrastructureLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Products.ProductFacetValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FacetValueId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacetValueId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductFacetValues");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -334,7 +406,33 @@ namespace InfrastructureLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DomainLayer.Entities.Product", b =>
+            modelBuilder.Entity("CategoryFacet", b =>
+                {
+                    b.HasOne("DomainLayer.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DomainLayer.Entities.Facets.Facet", null)
+                        .WithMany()
+                        .HasForeignKey("FacetsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Facets.FacetValue", b =>
+                {
+                    b.HasOne("DomainLayer.Entities.Facets.Facet", "Facet")
+                        .WithMany("FacetValues")
+                        .HasForeignKey("FacetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Facet");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Products.Product", b =>
                 {
                     b.HasOne("DomainLayer.Entities.Brand", "Brand")
                         .WithMany("Products")
@@ -347,6 +445,25 @@ namespace InfrastructureLayer.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Products.ProductFacetValue", b =>
+                {
+                    b.HasOne("DomainLayer.Entities.Facets.FacetValue", "FacetValue")
+                        .WithMany()
+                        .HasForeignKey("FacetValueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DomainLayer.Entities.Products.Product", "Product")
+                        .WithMany("ProductFacetValues")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FacetValue");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -408,6 +525,16 @@ namespace InfrastructureLayer.Migrations
             modelBuilder.Entity("DomainLayer.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Facets.Facet", b =>
+                {
+                    b.Navigation("FacetValues");
+                });
+
+            modelBuilder.Entity("DomainLayer.Entities.Products.Product", b =>
+                {
+                    b.Navigation("ProductFacetValues");
                 });
 #pragma warning restore 612, 618
         }
