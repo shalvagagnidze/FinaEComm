@@ -48,6 +48,10 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
                     await _unitOfWork.FacetValueRepository.AddOrUpdateAsync(facetValue);
                 }
             }
+            else
+            {
+                existingFacet.FacetValues = [];
+            }
 
             if (request.model.CategoryIds is not null && request.model.CategoryIds.Any())
             {
