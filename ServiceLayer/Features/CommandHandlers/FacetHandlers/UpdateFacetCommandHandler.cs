@@ -39,14 +39,35 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             existingFacet.IsCustom = request.model.IsCustom;
 
             var updatedFacetValues = request.model.FacetValues;
+            var existingFacetValues = await _unitOfWork.FacetValueRepository.GetAllAsync();
+            var filteredFacetValues = existingFacetValues.Where(x => x.FacetId == existingFacet.Id);
             if (updatedFacetValues is not null && updatedFacetValues.Any())
             {
-                foreach(var facetValueModel in updatedFacetValues!)
+                var updatedFacetValueIds = updatedFacetValues
+                                                            .Where(fv => fv.Id != Guid.Empty) 
+                                                            .Select(fv => fv.Id)
+                                                            .ToList();
+
+
+                var facetValuesToRemove = filteredFacetValues
+                    .Where(existing => !updatedFacetValueIds.Contains(existing.Id))
+                    .ToList();
+
+                foreach (var facetValueToRemove in facetValuesToRemove)
+                {
+                    await _unitOfWork.FacetValueRepository.DeleteByIdAsync(facetValueToRemove.Id);
+                }
+
+                foreach (var facetValueModel in updatedFacetValues!)
                 {
                     var facetValue = _mapper.Map<FacetValue>(facetValueModel);
                     facetValue.FacetId = existingFacet.Id;
                     await _unitOfWork.FacetValueRepository.AddOrUpdateAsync(facetValue);
                 }
+            }
+            else
+            {
+                existingFacet.FacetValues = [];
             }
 
             if (request.model.CategoryIds is not null && request.model.CategoryIds.Any())

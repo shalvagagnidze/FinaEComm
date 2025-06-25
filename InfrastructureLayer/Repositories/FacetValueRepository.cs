@@ -63,7 +63,7 @@ namespace InfrastructureLayer.Repositories
             }
             else
             {
-                _dbSet.Entry(entity).CurrentValues.SetValues(entity);
+                _dbSet.Entry(existingEntity).CurrentValues.SetValues(entity);
             }
         }
     }
