@@ -39,7 +39,8 @@ namespace ServiceLayer.Features.CommandHandlers.FacetHandlers
             {
                 model.FacetValues = request.FacetValues.Select(v => new FacetValueModel
                 {
-                    Value = v.Value,              
+                    Value = v.Value,
+                    ParentId = v.ParentId
                 }).ToList();
             }
 

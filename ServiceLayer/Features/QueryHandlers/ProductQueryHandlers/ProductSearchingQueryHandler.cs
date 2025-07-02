@@ -57,6 +57,7 @@ public class ProductSearchingQueryHandler : IRequestHandler<ProductSearchingQuer
   {
       "name" => product => product.Name!,
       "price" => product => product.Price,
+      "date" => product => product.CreatedDate,
       _ => product => product.Id
   };
 }

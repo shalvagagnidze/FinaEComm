@@ -55,6 +55,7 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
             {
                 Name = request.Name,
                 Price = request.Price,
+                DiscountPrice = request.DiscountPrice,
                 Status = StockStatus.InStock,
                 Condition = request.Condition,
                 Description = request.Description,

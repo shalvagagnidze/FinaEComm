@@ -5,6 +5,7 @@ namespace DomainLayer.Entities.Products
     {
         public string? Name { get; set; }
         public decimal Price { get; set; }
+        public decimal? DiscountPrice { get; set; }
         public StockStatus Status { get; set; }
         public int StockAmount { get; set; }
         public Condition Condition { get; set; }

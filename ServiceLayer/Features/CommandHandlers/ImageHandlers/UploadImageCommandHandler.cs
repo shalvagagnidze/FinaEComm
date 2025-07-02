@@ -41,9 +41,9 @@ namespace ServiceLayer.Features.CommandHandlers.ImageHandlers
 
             foreach (var file in request.files)
             {
-                if (file.Length > 2097152)
+                if (file.Length > 4194304)
                 {
-                    throw new ArgumentException("File size should not exceed 2 MB");
+                    throw new ArgumentException("File size should not exceed 4 MB");
                 }
 
                 var key = $"images/{product.Id}/{Guid.NewGuid()}";

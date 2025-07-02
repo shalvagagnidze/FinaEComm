@@ -10,6 +10,7 @@ namespace DomainLayer.Entities.Facets
     {
         public string? Value { get; set; }
         public Guid FacetId { get; set; }
+        public Guid? ParentId { get; set; }
 
         public Facet? Facet { get; set; }
     }

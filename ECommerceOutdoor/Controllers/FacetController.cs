@@ -30,6 +30,15 @@ namespace ECommerceOutdoor.Controllers
             return Ok(facet);
         }
 
+        [HttpGet("get-sub-facet-values")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetSubFacetValues(Guid facetValueId)
+        {
+            var facet = await Mediator.Send(new GetSubFacetValuesQuery(facetValueId));
+
+            return Ok(facet);
+        }
+
         [HttpPost("add-facet")]
         [ProducesResponseType(200)]
         [Authorize(Roles = "Admin,Moderator")]

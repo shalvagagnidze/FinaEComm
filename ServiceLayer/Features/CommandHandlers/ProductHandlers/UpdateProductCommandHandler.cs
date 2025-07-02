@@ -31,6 +31,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         existingProduct.Name = request.model.Name;
         existingProduct.Price = request.model.Price;
+        existingProduct.DiscountPrice = request.model.DiscountPrice;
         existingProduct.Status = request.model.Status;
         existingProduct.Description = request.model.Description;
         existingProduct.Images = request.model.Images;
@@ -51,17 +52,18 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         //}
 
         if (request.model.ProductFacetValues != null)
+        {
+            var productFacetValues = request.model.ProductFacetValues.Select(facetValue => new ProductFacetValue
             {
-                var productFacetValues = request.model.ProductFacetValues.Select(facetValue => new ProductFacetValue
-                {
-                    FacetValueId = facetValue.FacetValueId,
-                    ProductId = request.model.Id
-                });
+                FacetValueId = facetValue.FacetValueId,
+                ProductId = request.model.Id
+            });
 
-                existingProduct.ProductFacetValues = productFacetValues.ToList();
-            }
+            existingProduct.ProductFacetValues = productFacetValues.ToList();
+        }
 
-            _unitOfWork.ProductRepository.Update(existingProduct);
+
+        _unitOfWork.ProductRepository.Update(existingProduct);
 
         await _unitOfWork.SaveAsync();
 

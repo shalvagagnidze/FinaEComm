@@ -5,6 +5,6 @@ using ServiceLayer.Models;
 
 namespace ServiceLayer.Features.Commands.ProductCommands
 {
-    public record CreateProductCommand(string Name,decimal Price,Condition Condition, ICollection<ProductFacetValueModel>? ProductFacetValues, string Description, Guid CategoryId, Guid BrandId, List<string> Images) : IRequest<Guid>;
+    public record CreateProductCommand(string Name,decimal Price,decimal? DiscountPrice,Condition Condition, ICollection<ProductFacetValueModel>? ProductFacetValues, string Description, Guid CategoryId, Guid BrandId, List<string> Images) : IRequest<Guid>;
 
 }
