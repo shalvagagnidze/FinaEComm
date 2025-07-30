@@ -59,7 +59,8 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                 Status = StockStatus.InStock,
                 Condition = request.Condition,
                 Description = request.Description,
-                Images = images               
+                Images = images,
+                IsActive = request.IsActive
             };
 
             var product = _mapper.Map<Product>(model);
