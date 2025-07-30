@@ -15,7 +15,7 @@ namespace ServiceLayer.Models
         public List<string>? Images { get; set; }
         public Guid BrandId { get; set; }
         public Guid CategoryId { get; set; }
-        public bool? IsActive { get; set; } = true;
+        public bool? IsActive { get; set; }
         public ICollection<ProductFacetValueModel> ProductFacetValues { get; set; } = new List<ProductFacetValueModel>();
     }
 }

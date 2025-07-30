@@ -20,6 +20,7 @@ namespace ServiceLayer.Models
         public List<string>? Images { get; set; }
         public BrandModel? Brand { get; set; }
         public CategoryModel? Category { get; set; }
+        public bool? IsActive { get; set; }
         public ICollection<ProductFacetValueResponseModel> ProductFacetValues { get; set; } = new List<ProductFacetValueResponseModel>();
     }
 }

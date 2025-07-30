@@ -15,8 +15,10 @@ namespace ServiceLayer.Mapping
             CreateMap<BrandModel, Brand>();
             CreateMap<Category, CategoryModel>();
             CreateMap<CategoryModel, Category>();
-            CreateMap<Product, ProductModel>();
-            CreateMap<ProductModel, Product>();
+            CreateMap<Product, ProductModel>()
+                     .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true));
+            CreateMap<ProductModel, Product>()
+                     .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true));
             CreateMap<FacetValueModel, FacetValue>();
             CreateMap<FacetValue, FacetValueModel>();
             CreateMap<FacetModel, Facet>();
@@ -26,6 +28,7 @@ namespace ServiceLayer.Mapping
             CreateMap<Product, ProductResponseModel>()
                     .ForMember(prodResp => prodResp.Brand, prod => prod.MapFrom(product => product.Brand))
                     .ForMember(prodResp => prodResp.Category, cat => cat.MapFrom(product => product.Category))
+                    .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true))
                     .ReverseMap();
             CreateMap<ProductFacetValue, ProductFacetValueResponseModel>()
                 .ForMember(fv => fv.FacetName, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue!.Facet!.Name))
