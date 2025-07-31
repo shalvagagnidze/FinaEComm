@@ -21,6 +21,9 @@ namespace ServiceLayer.Models
         public BrandModel? Brand { get; set; }
         public CategoryModel? Category { get; set; }
         public bool? IsActive { get; set; }
+        public bool? IsLiquidated { get; set; }
+        public bool? IsComingSoon { get; set; }
+        public bool? IsNewArrival { get; set; }
         public ICollection<ProductFacetValueResponseModel> ProductFacetValues { get; set; } = new List<ProductFacetValueResponseModel>();
     }
 }

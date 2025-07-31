@@ -16,6 +16,9 @@ namespace ServiceLayer.Models
         public Guid BrandId { get; set; }
         public Guid CategoryId { get; set; }
         public bool? IsActive { get; set; }
+        public bool? IsLiquidated { get; set; }
+        public bool? IsComingSoon { get; set; }
+        public bool? IsNewArrival { get; set; }
         public ICollection<ProductFacetValueModel> ProductFacetValues { get; set; } = new List<ProductFacetValueModel>();
     }
 }

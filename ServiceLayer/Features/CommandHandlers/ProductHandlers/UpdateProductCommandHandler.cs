@@ -37,6 +37,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         existingProduct.Images = request.model.Images;
         existingProduct.Condition = request.model.Condition;
         existingProduct.IsActive = request.model.IsActive;
+        existingProduct.IsLiquidated = request.model.IsLiquidated;
+        existingProduct.IsComingSoon = request.model.IsComingSoon;
+        existingProduct.IsNewArrival = request.model.IsNewArrival;
 
         var brand = await _unitOfWork.BrandRepository.GetByIdAsync(request.model.BrandId);
         var category = await _unitOfWork.CategoryRepository.GetByIdAsync(request.model.CategoryId);

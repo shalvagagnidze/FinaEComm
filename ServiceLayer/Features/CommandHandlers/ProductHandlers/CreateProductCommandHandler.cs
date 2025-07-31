@@ -60,7 +60,10 @@ namespace ServiceLayer.Features.CommandHandlers.ProductHandlers
                 Condition = request.Condition,
                 Description = request.Description,
                 Images = images,
-                IsActive = request.IsActive
+                IsActive = request.IsActive,
+                IsLiquidated = request.IsLiquidated,
+                IsComingSoon = request.IsComingSoon,
+                IsNewArrival = request.IsNewArrival
             };
 
             var product = _mapper.Map<Product>(model);

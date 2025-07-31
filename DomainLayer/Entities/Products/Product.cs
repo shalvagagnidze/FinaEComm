@@ -17,7 +17,10 @@ namespace DomainLayer.Entities.Products
         public DateTime CreatedDate { get; set; }
         public DateTime? DeleteTime { get; set; }
         public bool isDeleted { get; set; }
-        public bool? IsActive { get; set; } = true;
+        public bool? IsActive { get; set; }
+        public bool? IsLiquidated { get; set; }
+        public bool? IsComingSoon { get; set; }
+        public bool? IsNewArrival { get; set; }
         public void DeleteProduct()
         {
             isDeleted = true;
