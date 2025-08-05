@@ -12,6 +12,7 @@ namespace InfrastructureLayer.Data
         private readonly FacetRepository _facetRepository;
         private readonly FacetValueRepository _facetValueRepository;
         private readonly ProductFacetValueRepository _productFacetValueRepository;
+        private readonly FAQRepository _faqRepository;
 
         public UnitOfWork(ECommerceDbContext db)
         {
@@ -22,6 +23,7 @@ namespace InfrastructureLayer.Data
             _facetRepository = new FacetRepository(_db);
             _facetValueRepository = new FacetValueRepository(_db);
             _productFacetValueRepository = new ProductFacetValueRepository(_db);
+            _faqRepository = new FAQRepository(_db);
         }
 
         public IBrandRepository BrandRepository => _brandRepository;
@@ -30,6 +32,7 @@ namespace InfrastructureLayer.Data
         public IFacetRepository FacetRepository => _facetRepository;
         public IFacetValueRepository FacetValueRepository => _facetValueRepository;
         public IProductFacetValueRepository ProductFacetValueRepository => _productFacetValueRepository;
+        public IFAQRepository FAQRepository => _faqRepository;
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();

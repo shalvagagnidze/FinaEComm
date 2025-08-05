@@ -8,6 +8,7 @@
         IFacetRepository FacetRepository { get; }
         IFacetValueRepository FacetValueRepository { get; }
         IProductFacetValueRepository ProductFacetValueRepository { get; }
+        IFAQRepository FAQRepository { get; }
         Task SaveAsync();
     }
 }

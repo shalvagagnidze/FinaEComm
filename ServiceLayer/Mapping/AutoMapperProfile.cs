@@ -42,6 +42,8 @@ namespace ServiceLayer.Mapping
             CreateMap<ProductFacetValue, ProductFacetValueResponseModel>()
                 .ForMember(fv => fv.FacetName, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue!.Facet!.Name))
                 .ForMember(fv => fv.FacetValue, opt => opt.MapFrom(productFacetValue => productFacetValue.FacetValue!.Value));
+            CreateMap<FAQ, FAQModel>();
+            CreateMap<FAQModel, FAQ>();
         }
     }
 }

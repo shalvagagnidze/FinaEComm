@@ -19,6 +19,7 @@ public class ECommerceDbContext : IdentityDbContext
     public DbSet<Facet>? Facets { get; set; }
     public DbSet<FacetValue>? FacetValues { get; set; }
     public DbSet<ProductFacetValue>? ProductFacetValues { get; set; }
+    public DbSet<FAQ>? FAQs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
