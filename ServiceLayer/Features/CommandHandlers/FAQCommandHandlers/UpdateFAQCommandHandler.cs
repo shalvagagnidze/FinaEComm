@@ -27,7 +27,7 @@ public class UpdateFAQCommandHandler : IRequestHandler<UpdateFAQCommand, Unit>
 
         var currentOrderNum = existingFaq.OrderNum;
         var newOrderNum = request.model.OrderNum;
-
+         
         if (currentOrderNum != newOrderNum)
         {
             var otherFAQs = (await _unitOfWork.FAQRepository.GetAllAsync())
