@@ -7,8 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ServiceLayer.Features.CommandHandlers.BrandHandlers;
 using ServiceLayer.Interfaces;
+using ServiceLayer.Interfaces.FinaInterfaces;
 using ServiceLayer.Mapping;
 using ServiceLayer.Services;
+using ServiceLayer.Services.FinaServices.FinaHelpers;
+using ServiceLayer.Services.FinaServices;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -26,6 +29,14 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         services.AddTransient<IAuthService, AuthService>();
+
+        services.AddSingleton<TokenStorageService>();
+        services.AddHttpClient<FinaApiClient>();
+        services.AddHttpClient<AuthenticationService>();
+        services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IProductGroupService, ProductGroupService>();
+        services.AddTransient<IProductService, ProductService>();
+
 
         services.AddTransient<IFileService, FileService>();
 

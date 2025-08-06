@@ -12,7 +12,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<ECommerceDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("ECommerceOutdoor"));
+            options.UseNpgsql(configuration.GetConnectionString("FinaEComm"));
         });
 
         services.AddTransient<IUnitOfWork, UnitOfWork>();

@@ -4,8 +4,11 @@ using InfrastructureLayer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using ServiceLayer;
+using ServiceLayer.Interfaces.FinaInterfaces;
 using ServiceLayer.Models;
 using ServiceLayer.Services;
+using ServiceLayer.Services.FinaServices;
+using ServiceLayer.Services.FinaServices.FinaHelpers;
 using System.Runtime;
 using Toycloud.AspNetCore.Mvc.ModelBinding;
 
@@ -38,6 +41,7 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
 
     return new AmazonS3Client(awsCredentials,config);
 });
+
 
 builder.Services.AddCors(options =>
 {
