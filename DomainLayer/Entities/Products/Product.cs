@@ -21,6 +21,7 @@ namespace DomainLayer.Entities.Products
         public bool? IsLiquidated { get; set; }
         public bool? IsComingSoon { get; set; }
         public bool? IsNewArrival { get; set; }
+        public int? FinaId { get; set; }
         public void DeleteProduct()
         {
             isDeleted = true;

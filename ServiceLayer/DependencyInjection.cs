@@ -37,7 +37,7 @@ public static class DependencyInjection
         services.AddTransient<IProductGroupService, ProductGroupService>();
         services.AddTransient<IProductService, ProductService>();
         services.AddTransient<ICharacteristicService, CharacteristicService>();
-
+        services.AddTransient<IFinaIntegrationService, FinaIntegrationService>();
 
         services.AddTransient<IFileService, FileService>();
 
