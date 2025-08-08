@@ -6,7 +6,7 @@ namespace ServiceLayer.Interfaces;
 
 public interface IAuthService
 {
-    Task<string> GenerateTokenString(IdentityUser user);
+    Task<string> GenerateTokenString(IdentityUser user, string token = "");
     Task<IActionResult> Login(string email, string password);
     Task<IActionResult> Registration(UserModel user);
 }

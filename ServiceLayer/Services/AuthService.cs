@@ -9,6 +9,8 @@ using ServiceLayer.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ServiceLayer.Services;
 
@@ -78,21 +80,78 @@ public class AuthService : IAuthService
         }
         var checkPass = await _userManager.CheckPasswordAsync(user, password);
 
+        var (success, token, error) = await GetFinaApiTokenAsync(email, password);
+
+        if (!success)
+        {
+            return new BadRequestObjectResult(error);
+        }
+
         if (checkPass)
         {
-            var tokenString = await GenerateTokenString(user);
+            var tokenString = await GenerateTokenString(user, token!);
             return new OkObjectResult(tokenString);
         }
         return new BadRequestObjectResult("Error occured");
     }
 
-    public async Task<string> GenerateTokenString(IdentityUser user)
+    private static async Task<(bool Success, string? Token, string? Error)> GetFinaApiTokenAsync(string email, string password)
+    {
+        HttpClient httpClient;
+        StringContent content;
+        RemoteAuthResponse? remote;
+
+        var targetUrl = $"http://31.97.38.206:7777/api/auth";
+        httpClient = new HttpClient();
+        var payload = new { Domain = "Cxenebi.ge", Email = email, Password = password };
+        var json = JsonSerializer.Serialize(payload);
+        content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        HttpResponseMessage resp;
+        try
+        {
+            resp = await httpClient.PostAsync(targetUrl, content);
+        }
+        catch (Exception ex)
+        {
+            return (false, null, ex.Message);
+        }
+
+        var responseBody = await resp.Content.ReadAsStringAsync();
+        if (!resp.IsSuccessStatusCode)
+        {
+            return (false, null, responseBody);
+        }
+
+        try
+        {
+            remote = JsonSerializer.Deserialize<RemoteAuthResponse>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+        catch
+        {
+            return (false, null, responseBody);
+        }
+
+        if (remote?.Ex is not null)
+        {
+            return (false, null, remote.Ex);
+        }
+
+        return (true, remote?.Token, null);
+    }
+
+
+    public async Task<string> GenerateTokenString(IdentityUser user, string token = "")
     {
         var roles = await _userManager.GetRolesAsync(user);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email,user.Email!),
             new Claim(ClaimTypes.Name,user.UserName!),
+            new Claim("fina_api_token", token),
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };
 
@@ -114,5 +173,14 @@ public class AuthService : IAuthService
 
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
+    }
+
+
+    public class RemoteAuthResponse
+    {
+        [JsonPropertyName("token")]
+        public string? Token { get; set; }
+        [JsonPropertyName("ex")]
+        public string? Ex { get; set; }
     }
 }
